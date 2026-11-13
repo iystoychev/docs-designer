@@ -275,11 +275,18 @@ def render(spec_path: Path, out: Path | None = None, author: str | None = None, 
     print_pdf(page, spec_path.parent.resolve(), out, keep_html)
     info = {**info, "pdf": str(out), "author_override": author, "rendered_at": datetime.now().astimezone().isoformat()}
     try:
-        STATE_DIR.mkdir(parents=True, exist_ok=True)
-        (STATE_DIR / "last.json").write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding="utf-8")
+        record(info)
     except OSError:
         pass  # the inspector is optional; a render never fails because of it
     return info
+
+
+def record(info: dict) -> None:
+    """Make this document the one the inspector shows (~/.docs-designer/last.json)."""
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    tmp = STATE_DIR / "last.json.tmp"
+    tmp.write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp.replace(STATE_DIR / "last.json")
 
 
 def main():
@@ -293,7 +300,10 @@ def main():
         info = render(a.spec, a.out, a.author, a.keep_html)
     except RenderError as e:
         sys.exit(f"render.py: error: {e}")
+    # The docs-designer mod reads these lines to show the document card in the chat.
     print(f"PDF: {info['pdf']}")
+    print(f"Title: {info['title']}")
+    print(f"Spec: {info['spec']}")
     print(f"Kind: {info['kind']} | Author: {info['author']} | Date: {info['date']}")
 
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- The document card now appears in the chat under the render call, instead of a side pane. **Inspect and edit** opens that card's own document, even an older one.
+
 ## 0.1.0 (2026-11-13)
 
 First release.

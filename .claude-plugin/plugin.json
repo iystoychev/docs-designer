@@ -2,10 +2,21 @@
   "name": "docs-designer",
   "version": "0.1.0",
   "description": "Turn any Claude conversation into a beautifully designed PDF (report, memo, guide, proposal or technical requirements), then click any text to edit it or point at it and tell Claude what to change.",
-  "author": { "name": "Ivan Stoychev", "url": "https://github.com/iystoychev" },
+  "author": {
+    "name": "Ivan Stoychev",
+    "url": "https://github.com/iystoychev"
+  },
   "homepage": "https://github.com/iystoychev/docs-designer",
   "repository": "https://github.com/iystoychev/docs-designer",
   "license": "MIT",
-  "keywords": ["pdf", "documents", "design-system", "skill", "report", "typography", "bulgarian", "claude-code"],
-  "types": "./types/index.d.ts"
+  "keywords": [
+    "pdf",
+    "documents",
+    "design-system",
+    "skill",
+    "report",
+    "typography",
+    "bulgarian",
+    "claude-code"
+  ]
 }

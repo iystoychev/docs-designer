@@ -1,22 +1,10 @@
-import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type { InspectedDoc, SentAsk } from '../types'
-
-// The inspector itself is a small local server that ships with the docs-designer
-// skill (scripts/inspect_server.py). This mod runs it, shows the current document
-// in a pane, opens the interactive page in the app's browser, and hands every
-// "Ask Claude" instruction from that page to Claude as a prompt that references
-// the exact element.
-
-const PANE = 'docs-inspector'
-const TITLE = 'Document'
-
-// Change a tag when that value's fields change: it declines what an earlier version stored.
-const doc = atom({ plugin: 'docs-designer', key: 'doc' } as const, null as InspectedDoc | null, { shape: 'doc-1' })
-const url = atom({ plugin: 'docs-designer', key: 'url' } as const, null as string | null, { shape: 'url-1' })
-const problem = atom({ plugin: 'docs-designer', key: 'problem' } as const, null as string | null, { shape: 'problem-1' })
-const sent = atom({ plugin: 'docs-designer', key: 'sent' } as const, [] as SentAsk[], { shape: 'sent-1' })
+// The inspector is a small local server that ships with the docs-designer skill
+// (scripts/inspect_server.py). This mod runs it, puts a card for every rendered
+// document into the chat (right under the call that rendered it), opens the
+// interactive page in the app's browser, and hands every "Ask Claude"
+// instruction from that page to Claude as a prompt naming the exact element.
 
 type Ask = {
   seq: number
@@ -31,11 +19,19 @@ type Ask = {
   section: string
 }
 
-type State = { empty?: true; title?: string; kind?: string; pdf?: string; spec?: string; version?: string }
+/** A document as render.py reports it on stdout (PDF:, Title:, Spec:, Kind: ... | Author: ...). */
+type Rendered = { pdf: string; title: string; spec: string; kind: string; author: string }
+
+type ElementTable = ReturnType<EngineInterface['ui']['resolve']>
 
 const KIND_NAMES: Record<string, string> = {
   report: 'Report', memo: 'Memo', guide: 'Guide', proposal: 'Proposal', requirements: 'Technical requirements',
 }
+
+// Per load: a reload restarts the server and these start over with it.
+let base: string | null = null // http://127.0.0.1:<port> once the server listens
+let problem: string | null = null
+let lastSeq = 0
 
 function promptFor(ask: Ask): string {
   const lines = [
@@ -56,14 +52,30 @@ function promptFor(ask: Ask): string {
   return lines.join('\n')
 }
 
-// Per load: a reload restarts the server and these start over with it.
-let base: string | null = null // http://127.0.0.1:<port> once the server listens
-let lastSeq = 0
-let lastVersion = ''
-let seenSpec = ''
+/** The document a finished render.py call produced, read from its output; null for anything else. */
+function renderedBy(call: { tool: string; output?: unknown; isRunning: boolean; isErrored: boolean }): Rendered | null {
+  if (call.tool !== 'Bash' || call.isRunning || call.isErrored) return null
+  const stdout = (call.output as { stdout?: unknown } | undefined)?.stdout
+  if (typeof stdout !== 'string' || !stdout.includes('PDF: ')) return null
+  const line = (label: string) => new RegExp(`^${label}: (.+)$`, 'm').exec(stdout)?.[1]?.trim()
+  const pdf = line('PDF'), spec = line('Spec'), meta = line('Kind')
+  if (!pdf || !spec || !meta) return null
+  const kind = meta.split('|')[0]?.trim() ?? ''
+  const author = /Author: ([^|]+)/.exec(meta)?.[1]?.trim() ?? ''
+  return { pdf, spec, kind, author, title: line('Title') ?? pdf.split('/').pop() ?? pdf }
+}
 
-async function openInspector($: EngineInterface): Promise<string> {
-  if (!base) return 'The inspector server is not running yet.'
+async function openInspector($: EngineInterface, doc?: Rendered): Promise<string> {
+  if (!base) return problem ?? 'The inspector is still starting. Try again in a moment.'
+  if (doc) {
+    // show this card's document, not whichever was rendered last
+    const res = await $.http.fetch(`${base}/api/select`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ spec: doc.spec, pdf: doc.pdf, author: doc.author }),
+    })
+    if (!res.ok) return (JSON.parse(res.text) as { error?: string }).error ?? `The inspector answered ${res.status}.`
+  }
   try {
     const result = await $.mcp.call('Claude_Browser', 'preview_start', { url: `${base}/` })
     if (!result.isError) return 'Opened the inspector in the browser pane.'
@@ -74,29 +86,38 @@ async function openInspector($: EngineInterface): Promise<string> {
   return `Opened the inspector in your browser: ${base}/`
 }
 
-async function poll($: EngineInterface): Promise<void> {
+/** The card shown in the chat for one rendered document. `key` keeps its buttons apart from other cards'. */
+function docCard($: EngineInterface, { Box, Text, Button }: ElementTable, doc: Rendered, key: string) {
+  return (
+    <Box key={`card-${key}`} flexDirection="column" gap="md" borderStyle="round" paddingX={2} paddingY={1}>
+      <Box flexDirection="column">
+        <Text dimColor>{KIND_NAMES[doc.kind] ?? doc.kind}</Text>
+        <Text bold>{doc.title}</Text>
+        <Text dimColor>{doc.pdf.split('/').pop()}</Text>
+      </Box>
+      <Box flexDirection="row" gap="sm" flexWrap="wrap">
+        <Button key={`inspect-${key}`} variant="primary" onPress={async () => $.ui.toast(await openInspector($, doc))}>
+          Inspect and edit
+        </Button>
+        <Button key={`pdf-${key}`} onPress={() => void $.process.run(['open', doc.pdf])}>
+          Open PDF
+        </Button>
+      </Box>
+      <Text dimColor>
+        In the inspector, click any text to edit it in place, or choose Ask Claude to send an instruction that points at
+        that exact element.
+      </Text>
+    </Box>
+  )
+}
+
+async function pollAsks($: EngineInterface): Promise<void> {
   if (!base) return
   try {
-    const state = JSON.parse((await $.http.fetch(`${base}/api/state`)).text) as State
-    if (!state.empty && state.version && state.version !== lastVersion) {
-      lastVersion = state.version
-      await update($, doc, () => ({
-        title: state.title ?? '', kind: state.kind ?? '', pdf: state.pdf ?? '',
-        spec: state.spec ?? '', version: state.version ?? '',
-      }))
-      if (state.spec && state.spec !== seenSpec) {
-        // a new document was rendered: show it beside the chat
-        seenSpec = state.spec
-        void $.ui.open({ id: PANE, title: TITLE })
-      }
-    }
     const asks = JSON.parse((await $.http.fetch(`${base}/api/asks?after=${lastSeq}`)).text) as Ask[]
     for (const ask of asks) {
       lastSeq = Math.max(lastSeq, ask.seq)
       void $.prompt.submit({ text: promptFor(ask) })
-      await update($, sent, list =>
-        [...list, { seq: ask.seq, instruction: ask.instruction, where: ask.where, section: ask.section }].slice(-20),
-      )
       $.ui.toast('Sent your instruction to Claude')
     }
   } catch {
@@ -111,8 +132,6 @@ export const register: Register = on => {
       name: 'docs-inspect',
       description: 'Open the docs-designer inspector for the most recent document',
     })
-    await update($, url, () => null)
-    await update($, problem, () => null)
 
     // The skill ships inside this plugin; a copy in ~/.claude/skills works too.
     const home = await $.env.get('HOME')
@@ -131,7 +150,7 @@ export const register: Register = on => {
       }
     }
     if (!server) {
-      await update($, problem, () => 'The docs-designer skill was not found next to this plugin or in ~/.claude/skills.')
+      problem = 'The docs-designer skill was not found next to this plugin or in ~/.claude/skills.'
       return started
     }
 
@@ -142,87 +161,51 @@ export const register: Register = on => {
           const port = stream === 'stdout' ? /LISTENING (\d+)/.exec(text)?.[1] : undefined
           if (port && !base) {
             base = `http://127.0.0.1:${port}`
-            await update($, url, () => base)
-            $.clock.every(1500, () => void poll($))
-            void poll($)
+            $.clock.every(1500, () => void pollAsks($))
           } else if (stream === 'stderr') {
             $.ui.log(`docs-designer inspector: ${text.trim()}`, { to: 'debug' })
           }
         }
         base = null
-        await update($, problem, () => 'The inspector server stopped. Start a new session to restart it.')
+        problem = 'The inspector server stopped. Start a new session to restart it.'
       } catch (err) {
-        await update($, problem, () => `The inspector server could not start: ${String(err)}`)
+        problem = `The inspector server could not start: ${String(err)}`
       }
     })()
 
     return started
   })
 
-  on('command.run', { command: 'docs-inspect' }, async $ => {
-    await $.ui.open({ id: PANE, title: TITLE, focus: true })
-    return { text: await openInspector($) }
+  on('command.run', { command: 'docs-inspect' }, async $ => ({ text: await openInspector($) }))
+
+  // The card for a document, right under the call that rendered it.
+  on('ui.render', { component: 'ToolUse' }, async ($, e, next) => {
+    const row = await next(e)
+    const doc = renderedBy(e.props)
+    if (!doc) return row
+    const { Box } = $.ui.resolve(e)
+    return (
+      <Box flexDirection="column" gap="sm">
+        {row}
+        {docCard($, $.ui.resolve(e), doc, e.props.tool_use_id)}
+      </Box>
+    )
   })
 
-  on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
-    const { Box, Text, Button } = $.ui.resolve(e)
-    const current = await read($, doc)
-    const address = await read($, url)
-    const issue = await read($, problem)
-    const asks = await read($, sent)
-
-    if (issue) {
-      return (
-        <Box flexDirection="column" gap="sm">
-          <Text bold>Document inspector</Text>
-          <Text>{issue}</Text>
-        </Box>
-      )
-    }
-    if (!current) {
-      return (
-        <Box flexDirection="column" gap="sm">
-          <Text bold>Document inspector</Text>
-          <Text dimColor>
-            {address ? 'No document yet. Ask Claude to make one with docs-designer and it shows up here.' : 'Starting…'}
-          </Text>
-        </Box>
-      )
-    }
-
-    const pdfName = current.pdf.split('/').pop() ?? current.pdf
+  // Shell calls folded into one group line hide their own rows: put the cards under the group.
+  on('ui.render', { component: 'ToolGroup' }, async ($, e, next) => {
+    const row = await next(e)
+    if (e.props.isExpanded) return row // each call draws its own row, and its own card
+    const cards = e.props.calls.flatMap((call, i) => {
+      const doc = renderedBy(call)
+      return doc ? [docCard($, $.ui.resolve(e), doc, call.tool_use_id ?? `${i}-${doc.pdf}`)] : []
+    })
+    if (cards.length === 0) return row
+    const { Box } = $.ui.resolve(e)
     return (
-      <Box flexDirection="column" gap="md">
-        <Box flexDirection="column">
-          <Text dimColor>{KIND_NAMES[current.kind] ?? current.kind}</Text>
-          <Text bold>{current.title}</Text>
-          <Text dimColor>{pdfName}</Text>
-        </Box>
-        <Box flexDirection="row" gap="sm" flexWrap="wrap">
-          <Button key="inspect" variant="primary" onPress={async () => $.ui.toast(await openInspector($))}>
-            Inspect and edit
-          </Button>
-          <Button key="pdf" onPress={() => void $.process.run(['open', current.pdf])}>
-            Open PDF
-          </Button>
-        </Box>
-        <Text dimColor>
-          In the inspector, click any text to edit it in place, or choose Ask Claude to send an instruction that
-          points at that exact element.
-        </Text>
-        {asks.length > 0 && (
-          <Box flexDirection="column">
-            <Text bold>Sent to Claude</Text>
-            {asks
-              .slice(-5)
-              .reverse()
-              .map(ask => (
-                <Text key={`ask-${ask.seq}`}>
-                  “{ask.instruction}” <Text dimColor>· {ask.section}</Text>
-                </Text>
-              ))}
-          </Box>
-        )}
+      <Box flexDirection="column" gap="sm">
+        {row}
+        {cards}
       </Box>
     )
   })

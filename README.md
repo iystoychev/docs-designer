@@ -50,7 +50,7 @@ Inside, every kind shares the same components: numbered sections, decision and w
 
 ## The inspector: click, edit, ask
 
-The plugin opens the latest document in a pane beside the chat. **Inspect and edit** shows it in the app's browser with the real fonts and layout:
+Every rendered document gets a card right in the chat, under the step that made it. **Inspect and edit** on the card opens that document in the app's browser with the real fonts and layout:
 
 - **Hover** outlines anything you can change.
 - **Edit text** lets you type straight into the page. Save with ⌘↵: the change is written back to the document's source and the PDF re-renders in a second or two.
@@ -151,7 +151,7 @@ conversation ──► Claude distills ──► doc.json + body.html ──► 
 
 - **`render.py`** fills the template with your content, then prints it with headless Chrome. The author is resolved from the spec, `--author` or git; the date is always the moment of rendering.
 - **`style.css`** is the whole design system: a 34 mm margin rail for labels, a 118 mm reading measure, Roboto Flex on its width axis for headings, Source Serif 4 for text and JetBrains Mono for code. Colour is rationed: cobalt only for decisions, amber only for warnings.
-- **The inspector** serves the same page with every editable element tagged, writes edits back to the source and re-renders. The plugin runs it, shows the pane and turns "Ask Claude" into a prompt.
+- **The inspector** serves the same page with every editable element tagged, writes edits back to the source and re-renders. The plugin runs it, puts the document card in the chat and turns "Ask Claude" into a prompt.
 
 The design decisions are recorded in [`DESIGN.md`](DESIGN.md) and [`PRODUCT.md`](PRODUCT.md).
 

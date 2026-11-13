@@ -95,5 +95,5 @@ Read the PDF back. Check that the front page shows the title, author and date, t
 
 ## Inspector (optional)
 
-Every render records itself in `~/.docs-designer/last.json`. With the docs-inspector mod installed, the document opens in a pane where the user can click any text to edit it or send you an instruction about it. Those instructions arrive as a prompt that names the element, its section, its current text and its file. Apply them to that element in the source and re-render to the same PDF path. Without the mod, `python3 SKILL_DIR/scripts/inspect_server.py` serves the same inspector at http://127.0.0.1:8765.
+Every render records itself in `~/.docs-designer/last.json`. With the docs-inspector mod installed, a card for the document appears in the chat under your render call; from it the user opens the inspector, clicks any text to edit it or sends you an instruction about it. Keep the render script's output lines (PDF, Title, Spec, Kind) intact: the card is built from them. Those instructions arrive as a prompt that names the element, its section, its current text and its file. Apply them to that element in the source and re-render to the same PDF path. Without the mod, `python3 SKILL_DIR/scripts/inspect_server.py` serves the same inspector at http://127.0.0.1:8765.
 

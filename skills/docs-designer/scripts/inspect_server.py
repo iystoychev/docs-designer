@@ -14,6 +14,7 @@ Endpoints (127.0.0.1 only):
   GET  /api/state            {version, title, kind, pdf, spec, ...}
   POST /api/edit             {id, html, version}  edit one element, re-render
   POST /api/ask              {id, instruction, version}  queue an instruction for Claude
+  POST /api/select           {spec, pdf, author?}  show another rendered document
   GET  /api/asks?after=N     queued instructions with seq > N
 """
 import argparse
@@ -159,6 +160,8 @@ class Handler(BaseHTTPRequestHandler):
             req = self._body()
         except json.JSONDecodeError:
             return self._json({"error": "invalid JSON"}, 400)
+        if url.path == "/api/select":
+            return self._select(req)
         info = current()
         if not info:
             return self._json({"error": "no document has been rendered yet"}, 409)
@@ -187,6 +190,23 @@ class Handler(BaseHTTPRequestHandler):
         except render.RenderError as e:
             return self._json({"error": f"Saved, but the render failed: {e}"}, 500)
         self._send(404, b"not found", "text/plain")
+
+    def _select(self, req: dict) -> None:
+        """Show another rendered document: {spec, pdf, author?}, as a chat card reports it."""
+        spec_path, pdf = Path(str(req.get("spec") or "")), Path(str(req.get("pdf") or ""))
+        if not spec_path.is_absolute() or not pdf.is_absolute() or not pdf.is_file():
+            return self._json({"error": "That document's files are no longer on disk."}, 404)
+        try:
+            spec, body_path, _ = render.load(spec_path)
+        except render.RenderError as e:
+            return self._json({"error": f"Cannot open the document: {e}"}, 400)
+        author = str(req.get("author") or "").strip() or None
+        info = {"title": str(spec["title"]), "kind": spec.get("kind", "report"), "lang": spec.get("lang", "en"),
+                "author": author or "", "spec": str(spec_path), "body": str(body_path), "pdf": str(pdf),
+                "author_override": author}
+        with LOCK:
+            render.record(info)
+        return self._json({"ok": True, "version": version(info)})
 
 
 EMPTY = """<!doctype html><meta charset="utf-8"><title>docs-designer inspector</title>
