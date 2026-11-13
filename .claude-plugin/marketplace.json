@@ -1,0 +1,15 @@
+{
+  "name": "docs-designer",
+  "description": "Designed PDF documents from Claude conversations: five document kinds, one design system, a click-to-edit inspector.",
+  "owner": {
+    "name": "Ivan Stoychev",
+    "url": "https://github.com/iystoychev"
+  },
+  "plugins": [
+    {
+      "name": "docs-designer",
+      "source": "./",
+      "description": "Designed PDFs from Claude conversations, with a click-to-edit inspector."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "guide",
+  "title": "Writing a document with docs-designer",
+  "subtitle": "From a blank folder to a finished PDF",
+  "abstract": "This guide shows how to describe a document, write its body with the shared components and print it as a PDF.",
+  "meta": {"Audience": "Anyone writing documents", "Time": "10 minutes"},
+  "body": "body.html"
+}

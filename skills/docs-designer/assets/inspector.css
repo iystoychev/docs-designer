@@ -1,0 +1,65 @@
+/* docs-designer inspector: screen-only chrome around the document.
+   Served by scripts/inspect_server.py; never part of a printed PDF. */
+@media screen {
+  :root { --dd-ui: #C2255C; --dd-ui-wash: rgba(194, 37, 92, 0.07); --dd-bar: #121417; }
+  html { background: #D9DCD7; }
+  body { background: transparent; margin: 0; padding: 64px 0 64px; }
+
+  /* the document as sheets of A4 paper */
+  .front, .doc {
+    width: 210mm; margin: 0 auto 10mm; background: var(--paper);
+    box-shadow: 0 1px 2px rgba(18, 20, 23, 0.08), 0 10px 30px rgba(18, 20, 23, 0.12);
+  }
+  .front.cover { height: 297mm; padding: 18mm 20mm 24mm; }
+  .doc { padding: 22mm 25mm 26mm calc(25mm + var(--indent)); }
+  .kind-memo .front { margin-bottom: 0; padding: 18mm 25mm calc(var(--step) * 2.4); box-shadow: none; }
+  .kind-memo .doc { padding-top: 0; }
+
+  /* what can be pointed at */
+  [data-dd] { cursor: pointer; border-radius: 2px; transition: background-color 120ms ease-out, outline-color 120ms ease-out; }
+  [data-dd]:hover { outline: 1.5px dashed var(--dd-ui); outline-offset: 2px; background-color: var(--dd-ui-wash); }
+  [data-dd].dd-selected { outline: 2px solid var(--dd-ui); outline-offset: 2px; background-color: var(--dd-ui-wash); }
+  [data-dd][contenteditable="true"] { cursor: text; outline: 2px solid var(--dd-ui); outline-offset: 3px; background: #fff; }
+  .outcome [data-dd][contenteditable="true"] { background: transparent; }
+  .dd-busy { opacity: 0.55; pointer-events: none; }
+
+  /* top bar */
+  .dd-bar {
+    position: fixed; inset: 0 0 auto 0; z-index: 10; height: 44px; display: flex; align-items: center; gap: 14px;
+    padding: 0 16px; background: var(--dd-bar); color: #F6F7F5; font: 500 13px/1 system-ui, -apple-system, sans-serif;
+  }
+  .dd-bar .dd-title { font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40vw; }
+  .dd-bar .dd-kind { opacity: 0.6; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+  .dd-bar .dd-hint { margin-left: auto; opacity: 0.6; font-size: 12px; }
+  .dd-bar a, .dd-btn {
+    font: 600 12px/1 system-ui, -apple-system, sans-serif; color: inherit; text-decoration: none; cursor: pointer;
+    padding: 8px 11px; border-radius: 6px; border: 1px solid rgba(246, 247, 245, 0.25); background: transparent;
+  }
+  .dd-bar a:hover { background: rgba(246, 247, 245, 0.1); }
+
+  /* the menu and forms that open on an element */
+  .dd-pop {
+    position: absolute; z-index: 20; min-width: 300px; max-width: 420px; padding: 10px;
+    background: #fff; color: #121417; border-radius: 10px; font: 400 13px/1.4 system-ui, -apple-system, sans-serif;
+    box-shadow: 0 2px 6px rgba(18, 20, 23, 0.12), 0 14px 40px rgba(18, 20, 23, 0.22);
+  }
+  .dd-pop .dd-row { display: flex; gap: 8px; }
+  .dd-pop .dd-btn { border-color: #C9CCD1; color: #121417; padding: 9px 12px; }
+  .dd-pop .dd-btn:hover { background: #F0F1EF; }
+  .dd-pop .dd-btn.dd-primary { background: var(--dd-ui); border-color: var(--dd-ui); color: #fff; }
+  .dd-pop .dd-btn.dd-primary:hover { background: #A61E4D; }
+  .dd-pop .dd-btn:focus-visible { outline: 2px solid var(--dd-ui); outline-offset: 2px; }
+  .dd-pop .dd-where { margin: 0 0 8px; color: #4A4F57; font-size: 12px; }
+  .dd-pop textarea {
+    display: block; width: 100%; min-height: 84px; margin: 0 0 8px; padding: 8px 10px; resize: vertical;
+    font: 400 14px/1.4 system-ui, -apple-system, sans-serif; border: 1px solid #C9CCD1; border-radius: 6px;
+  }
+  .dd-pop textarea:focus { outline: 2px solid var(--dd-ui); outline-offset: 0; border-color: transparent; }
+  .dd-pop .dd-keys { margin-left: auto; align-self: center; color: #4A4F57; font-size: 11px; }
+
+  .dd-toast {
+    position: fixed; z-index: 30; left: 50%; bottom: 20px; transform: translateX(-50%); padding: 10px 14px;
+    background: var(--dd-bar); color: #F6F7F5; border-radius: 8px; font: 500 13px/1.3 system-ui, -apple-system, sans-serif;
+  }
+  .dd-toast.dd-error { background: #8A1C1C; }
+}

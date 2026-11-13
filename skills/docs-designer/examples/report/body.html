@@ -1,0 +1,59 @@
+<p class="lede">The design must look the same in every document, work offline and need nothing beyond what is already on the machine.</p>
+
+<h2>Context</h2>
+<p>Documents are written as a small HTML body and a JSON description. A renderer combines them with the shared template and stylesheet and prints an A4 PDF.</p>
+<dl class="keyfacts">
+  <div><dt>Renderer</dt><dd>Headless Chrome</dd></div>
+  <div><dt>Page size</dt><dd>A4 portrait</dd></div>
+  <div><dt>Dependencies</dt><dd>Python 3 stdlib</dd></div>
+  <div><dt>Headings</dt><dd>Roboto Flex</dd></div>
+  <div><dt>Text</dt><dd>Source Serif 4</dd></div>
+  <div><dt>Code</dt><dd>JetBrains Mono</dd></div>
+</dl>
+
+<h2>Findings</h2>
+<h3>Options considered</h3>
+<table>
+  <caption>Rendering options</caption>
+  <thead><tr><th>Option</th><th>Outcome</th></tr></thead>
+  <tbody>
+    <tr><td>WeasyPrint</td><td>Not installed on this machine</td></tr>
+    <tr><td>Headless Chrome</td><td>Chosen: already installed, supports <code>@page</code> margin boxes</td></tr>
+  </tbody>
+</table>
+<div class="callout decision">
+  <p><strong>The design lives in code.</strong> The template, stylesheet and renderer own every visual decision, so documents cannot drift apart.</p>
+</div>
+<div class="callout warning">
+  <p>Chrome must be installed. If it is somewhere unusual, set <code>CHROME_PATH</code> before rendering.</p>
+</div>
+
+<h3>How a document is printed</h3>
+<figure>
+  <svg viewBox="0 38 480 44" role="img" aria-label="Pipeline: content, template, render, PDF">
+    <g font-family="Roboto Flex, sans-serif" font-size="11" fill="#121417">
+      <rect x="1" y="40" width="88" height="40" fill="none" stroke="#121417"/><text x="45" y="64" text-anchor="middle">Content</text>
+      <rect x="129" y="40" width="88" height="40" fill="none" stroke="#121417"/><text x="173" y="64" text-anchor="middle">Template</text>
+      <rect x="257" y="40" width="88" height="40" fill="none" stroke="#121417"/><text x="301" y="64" text-anchor="middle">Render</text>
+      <rect x="385" y="40" width="88" height="40" fill="#121417" stroke="#121417"/><text x="429" y="64" text-anchor="middle" fill="#F6F7F5">PDF</text>
+      <path d="M89 60h40M217 60h40M345 60h40" stroke="#121417"/>
+    </g>
+  </svg>
+  <figcaption>Only the content changes between documents.</figcaption>
+</figure>
+<pre data-label="Shell"><code>python3 scripts/render.py doc.json --out docs/report.pdf</code></pre>
+
+<blockquote>
+  <p>Make sure that the name of the author is included and the date that the document is created.</p>
+  <cite>From the original brief</cite>
+</blockquote>
+
+<div class="callout note">
+  <p>Colour is reserved for decisions, warnings and the key point on the front page.</p>
+</div>
+
+<h2>Next steps</h2>
+<ul>
+  <li>Use the template for real documents.</li>
+  <li>Add a component only when a document genuinely needs one.</li>
+</ul>

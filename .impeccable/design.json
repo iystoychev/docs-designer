@@ -1,0 +1,507 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-13T00:00:00Z",
+  "title": "Design System: docs-designer",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "oklch(97.5% 0.003 128.5)",
+        "tonalRamp": [
+          "oklch(15% 0.003 128.5)",
+          "oklch(26% 0.003 128.5)",
+          "oklch(37% 0.003 128.5)",
+          "oklch(49% 0.003 128.5)",
+          "oklch(60% 0.003 128.5)",
+          "oklch(72% 0.003 128.5)",
+          "oklch(83% 0.003 128.5)",
+          "oklch(95% 0.003 128.5)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(19.0% 0.007 258.4)",
+        "tonalRamp": [
+          "oklch(15% 0.007 258.4)",
+          "oklch(26% 0.007 258.4)",
+          "oklch(37% 0.007 258.4)",
+          "oklch(49% 0.007 258.4)",
+          "oklch(60% 0.007 258.4)",
+          "oklch(72% 0.007 258.4)",
+          "oklch(83% 0.007 258.4)",
+          "oklch(95% 0.007 258.4)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "oklch(42.6% 0.015 259.8)",
+        "tonalRamp": [
+          "oklch(15% 0.015 259.8)",
+          "oklch(26% 0.015 259.8)",
+          "oklch(37% 0.015 259.8)",
+          "oklch(49% 0.015 259.8)",
+          "oklch(60% 0.015 259.8)",
+          "oklch(72% 0.015 259.8)",
+          "oklch(83% 0.015 259.8)",
+          "oklch(95% 0.015 259.8)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline Grey",
+        "canonical": "oklch(84.4% 0.008 260.7)",
+        "tonalRamp": [
+          "oklch(15% 0.008 260.7)",
+          "oklch(26% 0.008 260.7)",
+          "oklch(37% 0.008 260.7)",
+          "oklch(49% 0.008 260.7)",
+          "oklch(60% 0.008 260.7)",
+          "oklch(72% 0.008 260.7)",
+          "oklch(83% 0.008 260.7)",
+          "oklch(95% 0.008 260.7)"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Rule",
+        "canonical": "oklch(19.0% 0.007 258.4)",
+        "tonalRamp": [
+          "oklch(15% 0.007 258.4)",
+          "oklch(26% 0.007 258.4)",
+          "oklch(37% 0.007 258.4)",
+          "oklch(49% 0.007 258.4)",
+          "oklch(60% 0.007 258.4)",
+          "oklch(72% 0.007 258.4)",
+          "oklch(83% 0.007 258.4)",
+          "oklch(95% 0.007 258.4)"
+        ]
+      },
+      "tint": {
+        "role": "neutral",
+        "displayName": "Tint",
+        "canonical": "oklch(94.7% 0.003 145.5)",
+        "tonalRamp": [
+          "oklch(15% 0.003 145.5)",
+          "oklch(26% 0.003 145.5)",
+          "oklch(37% 0.003 145.5)",
+          "oklch(49% 0.003 145.5)",
+          "oklch(60% 0.003 145.5)",
+          "oklch(72% 0.003 145.5)",
+          "oklch(83% 0.003 145.5)",
+          "oklch(95% 0.003 145.5)"
+        ]
+      },
+      "decision": {
+        "role": "primary",
+        "displayName": "Decision Cobalt",
+        "canonical": "oklch(46.6% 0.228 268.7)",
+        "tonalRamp": [
+          "oklch(15% 0.228 268.7)",
+          "oklch(26% 0.228 268.7)",
+          "oklch(37% 0.228 268.7)",
+          "oklch(49% 0.228 268.7)",
+          "oklch(60% 0.228 268.7)",
+          "oklch(72% 0.228 268.7)",
+          "oklch(83% 0.228 268.7)",
+          "oklch(95% 0.228 268.7)"
+        ]
+      },
+      "decision-wash": {
+        "role": "primary",
+        "displayName": "Cobalt Wash",
+        "canonical": "oklch(94.5% 0.020 277.0)",
+        "tonalRamp": [
+          "oklch(15% 0.020 277.0)",
+          "oklch(26% 0.020 277.0)",
+          "oklch(37% 0.020 277.0)",
+          "oklch(49% 0.020 277.0)",
+          "oklch(60% 0.020 277.0)",
+          "oklch(72% 0.020 277.0)",
+          "oklch(83% 0.020 277.0)",
+          "oklch(95% 0.020 277.0)"
+        ]
+      },
+      "on-decision": {
+        "role": "primary",
+        "displayName": "On-Cobalt White",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26% 0 0)",
+          "oklch(37% 0 0)",
+          "oklch(49% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(72% 0 0)",
+          "oklch(83% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "warning": {
+        "role": "secondary",
+        "displayName": "Warning Amber Ink",
+        "canonical": "oklch(50.8% 0.108 73.3)",
+        "tonalRamp": [
+          "oklch(15% 0.108 73.3)",
+          "oklch(26% 0.108 73.3)",
+          "oklch(37% 0.108 73.3)",
+          "oklch(49% 0.108 73.3)",
+          "oklch(60% 0.108 73.3)",
+          "oklch(72% 0.108 73.3)",
+          "oklch(83% 0.108 73.3)",
+          "oklch(95% 0.108 73.3)"
+        ]
+      },
+      "warning-mark": {
+        "role": "secondary",
+        "displayName": "Warning Amber Mark",
+        "canonical": "oklch(75.0% 0.155 80.4)",
+        "tonalRamp": [
+          "oklch(15% 0.155 80.4)",
+          "oklch(26% 0.155 80.4)",
+          "oklch(37% 0.155 80.4)",
+          "oklch(49% 0.155 80.4)",
+          "oklch(60% 0.155 80.4)",
+          "oklch(72% 0.155 80.4)",
+          "oklch(83% 0.155 80.4)",
+          "oklch(95% 0.155 80.4)"
+        ]
+      },
+      "warning-wash": {
+        "role": "secondary",
+        "displayName": "Warning Wash",
+        "canonical": "oklch(96.2% 0.030 88.4)",
+        "tonalRamp": [
+          "oklch(15% 0.030 88.4)",
+          "oklch(26% 0.030 88.4)",
+          "oklch(37% 0.030 88.4)",
+          "oklch(49% 0.030 88.4)",
+          "oklch(60% 0.030 88.4)",
+          "oklch(72% 0.030 88.4)",
+          "oklch(83% 0.030 88.4)",
+          "oklch(95% 0.030 88.4)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Cover title for report, proposal, guide and requirements; Roboto Flex at width 70%, balanced, words never split."
+      },
+      "display-memo": {
+        "displayName": "Display Memo",
+        "purpose": "Memo title in the compact head; width 75%."
+      },
+      "kind": {
+        "displayName": "Kind",
+        "purpose": "Kind name in the masthead; extended (125%) tracked uppercase."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Optional one-line framing; Source Serif 4 italic in Graphite (13pt on the memo)."
+      },
+      "outcome": {
+        "displayName": "Outcome",
+        "purpose": "The key point in the cobalt form cell."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Numbered section heads; number repeated at 700 in the rail."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sub-section heads; n.n number in Graphite in the rail."
+      },
+      "subhead": {
+        "displayName": "Subhead",
+        "purpose": "Unnumbered h4 sub-heads."
+      },
+      "value": {
+        "displayName": "Value",
+        "purpose": "Filled-in form values; key-facts values at 10.5pt with tabular figures."
+      },
+      "contents": {
+        "displayName": "Contents",
+        "purpose": "Contents-map entries on guide and requirements covers."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "Optional opening paragraph of the body, once."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose in the 118mm measure on the 14.6pt step; locl off for one set of Cyrillic forms."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Table cells, tabular figures."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Figure descriptions and attributions; the footer byline uses the same size at 500 in Ink."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Tracked uppercase field names, rail labels, code labels, table heads (6.3-7pt, width 112%)."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Code blocks; inline code at 0.86em, ligatures off."
+      }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [],
+    "fonts": {
+      "Roboto Flex": {
+        "axes": "wght 100-1000, wdth 25-151%",
+        "subsets": "latin, latin-ext, cyrillic, cyrillic-ext",
+        "reason": "The only free face with both Cyrillic and a width axis; the width axis carries the condensed titles and headings and the extended labels. Replaced Archivo (no Cyrillic). Never set at default width for display."
+      },
+      "Source Serif 4": {
+        "axes": "wght 200-900, opsz auto; roman and italic",
+        "subsets": "latin, latin-ext, cyrillic, cyrillic-ext"
+      },
+      "JetBrains Mono": {
+        "axes": "wght 400-700",
+        "subsets": "latin, latin-ext, cyrillic, cyrillic-ext"
+      },
+      "featureSettings": "\"locl\" 0 on body: one set of Cyrillic letterforms across all three faces",
+      "fontDisplay": "block (vendored, offline)"
+    },
+    "page": {
+      "size": "A4",
+      "margin": "22mm 25mm 24mm 25mm",
+      "firstPageMargin": "18mm 20mm 24mm",
+      "textBlock": "160mm (34mm rail + 8mm gap + 118mm measure)",
+      "runningHeader": "kind name left (600 6.8pt, width 112%, 0.1em, uppercase), document title right (500 6.8pt); Graphite, 5mm above the text block",
+      "runningFooter": "author · date left (500 7.5pt Ink), page n / total right (650 7.5pt tabular), over a 0.5pt Hairline Grey rule",
+      "firstPage": "no running header or byline; page counter remains"
+    },
+    "frontLayouts": {
+      "report": "full cover; title low, 11mm over the form; form: author, date, fields, summary, outcome",
+      "proposal": "full cover; title 9mm over the form; form: recommendation, summary, author, date, fields",
+      "guide": "cover map; title 30mm below masthead, form, contents map anchored at the foot",
+      "requirements": "cover map; as guide; requirements numbered across the body",
+      "memo": "no cover; 30pt title 14mm below masthead, form with decision before summary, body on page one"
+    },
+    "languages": {
+      "en": {
+        "date": "13 November 2026",
+        "callouts": [
+          "Note",
+          "Decision",
+          "Warning",
+          "Aside"
+        ],
+        "step": "Step n",
+        "table": "Table n",
+        "figure": "Figure n"
+      },
+      "bg": {
+        "date": "13 ноември 2026 г.",
+        "callouts": [
+          "Бележка",
+          "Решение",
+          "Внимание",
+          "Забележка"
+        ],
+        "step": "Стъпка n",
+        "table": "Таблица n",
+        "figure": "Фигура n"
+      }
+    },
+    "rules": {
+      "hairline": "0.5pt",
+      "strong": "1pt",
+      "form-top": "1.5pt",
+      "masthead": "3pt"
+    }
+  },
+  "components": [
+    {
+      "name": "Masthead and Title",
+      "kind": "custom",
+      "refersTo": "masthead",
+      "description": "3pt rule with the kind name and date, then the condensed title and italic subtitle; opens every kind.",
+      "html": "<div class=\"ds-front\"><div class=\"ds-masthead\"><span class=\"ds-kind\">Report</span><span class=\"ds-when\">13 November 2026</span></div><h1 class=\"ds-h1\">Choosing a PDF renderer</h1><p class=\"ds-sub\">A reference report that uses every body component</p></div>",
+      "css": ".ds-front{background:#F6F7F5;color:#121417;} .ds-masthead{display:flex;justify-content:space-between;align-items:baseline;gap:6mm;border-top:3pt solid #121417;padding-top:3mm;font-family:'Roboto Flex','Helvetica Neue',Arial,sans-serif;} .ds-kind{font-size:9pt;font-weight:750;font-stretch:125%;letter-spacing:.16em;text-transform:uppercase;} .ds-when{font-size:9pt;font-weight:500;font-variant-numeric:tabular-nums;} .ds-h1{margin:14mm 0 0;font:720 48pt/.98 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:70%;letter-spacing:-.01em;word-spacing:.1em;text-wrap:balance;} .ds-sub{margin:5mm 0 0;font:italic 400 15pt/1.3 'Source Serif 4',Georgia,serif;color:#4A4F57;}"
+    },
+    {
+      "name": "Front-Page Form with Key Point",
+      "kind": "card",
+      "refersTo": "form-cell",
+      "description": "Ruled grid of fields that closes on the right edge; the key point is the one solid cobalt cell.",
+      "html": "<div class=\"ds-form\"><div class=\"ds-cell ds-half\"><span class=\"ds-field\">Author</span><span class=\"ds-value\">A. Author</span></div><div class=\"ds-cell\"><span class=\"ds-field\">Date</span><span class=\"ds-value\">13 November 2026</span></div><div class=\"ds-cell\"><span class=\"ds-field\">Status</span><span class=\"ds-value\">Final</span></div><div class=\"ds-cell ds-full\"><span class=\"ds-field\">Summary</span><p class=\"ds-value ds-abs\">Documents print through one fixed template; only the content changes.</p></div><div class=\"ds-cell ds-full ds-outcome\"><span class=\"ds-field\">Outcome</span><p class=\"ds-value\">Headless Chrome renders every document.</p></div></div>",
+      "css": ".ds-form{display:flex;flex-wrap:wrap;border-top:1.5pt solid #121417;border-left:.5pt solid #121417;background:#F6F7F5;color:#121417;} .ds-cell{flex:1 1 25%;min-height:17mm;padding:2.2mm 3mm 3.2mm;border-right:.5pt solid #121417;border-bottom:.5pt solid #121417;} .ds-half{flex-basis:50%;} .ds-full{flex-basis:100%;} .ds-field{display:block;margin-bottom:2mm;font:600 6.3pt/1.1 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.11em;text-transform:uppercase;color:#4A4F57;} .ds-value{display:block;margin:0;font:620 11pt/1.25 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:92%;} .ds-abs{font:400 11.5pt/1.5 'Source Serif 4',Georgia,serif;} .ds-outcome{background:#2B3FD6;color:#fff;padding-bottom:5mm;} .ds-outcome .ds-field{color:rgba(255,255,255,.84);} .ds-outcome .ds-value{font:650 15pt/1.22 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:88%;}"
+    },
+    {
+      "name": "Contents Map",
+      "kind": "nav",
+      "refersTo": "contents-item",
+      "description": "Two-column numbered list of h2 sections, anchored at the foot of guide and requirements covers.",
+      "html": "<nav class=\"ds-toc\"><span class=\"ds-tf\">Contents</span><ol><li>Before you start</li><li>Describe the document</li><li>Write the body</li><li>Print it</li></ol></nav>",
+      "css": ".ds-toc{background:#F6F7F5;color:#121417;padding-top:6mm;} .ds-tf{display:block;margin-bottom:2mm;font:600 6.3pt/1.1 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.11em;text-transform:uppercase;color:#4A4F57;} .ds-toc ol{margin:0;padding:0;list-style:none;counter-reset:toc;columns:2;column-gap:8mm;border-top:1pt solid #121417;} .ds-toc li{counter-increment:toc;break-inside:avoid;display:grid;grid-template-columns:8mm 1fr;padding:2mm 0 2.2mm;border-bottom:.5pt solid #C9CCD1;font:560 10.5pt/1.3 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:92%;} .ds-toc li::before{content:counter(toc);font-weight:750;font-variant-numeric:tabular-nums;}"
+    },
+    {
+      "name": "Numbered Section Head",
+      "kind": "custom",
+      "refersTo": "section-heading",
+      "description": "Section number in the rail and heading in the measure, each under its own 1pt rule.",
+      "html": "<div class=\"ds-sec\"><span class=\"ds-num\">2</span><h2 class=\"ds-h2\">Findings</h2></div>",
+      "css": ".ds-sec{display:grid;grid-template-columns:34mm 1fr;column-gap:8mm;background:#F6F7F5;color:#121417;} .ds-num,.ds-h2{margin:0;padding-top:2.5mm;border-top:1pt solid #121417;font-family:'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-size:15pt;line-height:1.15;font-stretch:85%;} .ds-num{font-weight:700;font-variant-numeric:tabular-nums;} .ds-h2{font-weight:650;letter-spacing:-.005em;}"
+    },
+    {
+      "name": "Decision Callout",
+      "kind": "custom",
+      "refersTo": "callout-decision",
+      "description": "A decision and its reason: cobalt rules, cobalt wash, label in the rail.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-rl\" style=\"color:#2B3FD6\">Decision</span><div class=\"ds-dec\"><p><strong>The design lives in code.</strong> The template, stylesheet and renderer own every visual decision.</p></div></div>",
+      "css": ".ds-row{display:grid;grid-template-columns:34mm 1fr;column-gap:8mm;background:#F6F7F5;color:#121417;font-feature-settings:'locl' 0;} .ds-rl{font:650 6.8pt/1.3 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;padding-top:2.8mm;} .ds-dec{background:#E9ECFB;padding:2.4mm 3.5mm 2.6mm;border-top:.5pt solid #2B3FD6;border-bottom:.5pt solid #2B3FD6;font:400 10pt/14.6pt 'Source Serif 4',Georgia,serif;} .ds-dec p{margin:0;} .ds-dec strong{font-weight:650;}"
+    },
+    {
+      "name": "Warning Callout",
+      "kind": "custom",
+      "refersTo": "callout-warning",
+      "description": "A risk or gotcha: amber-mark rules, warning wash, amber label in the rail.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-rl\" style=\"color:#8A5A00\">Warning</span><div class=\"ds-warn\"><p>Chrome must be installed. Set <code class=\"ds-code\">CHROME_PATH</code> if it is somewhere unusual.</p></div></div>",
+      "css": ".ds-row{display:grid;grid-template-columns:34mm 1fr;column-gap:8mm;background:#F6F7F5;color:#121417;font-feature-settings:'locl' 0;} .ds-rl{font:650 6.8pt/1.3 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;padding-top:2.8mm;} .ds-warn{background:#FBF2DC;padding:2.4mm 3.5mm 2.6mm;border-top:.5pt solid #E0A100;border-bottom:.5pt solid #E0A100;font:400 10pt/14.6pt 'Source Serif 4',Georgia,serif;} .ds-warn p{margin:0;} .ds-code{font-family:'JetBrains Mono',Menlo,monospace;font-size:.86em;background:#ECEEEC;padding:.2mm 1mm;border-radius:1pt;font-variant-ligatures:none;}"
+    },
+    {
+      "name": "Aside Callout",
+      "kind": "custom",
+      "refersTo": "callout-aside",
+      "description": "An allowance or exception: hairline rules, italic text, Graphite label in the rail.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-rl\" style=\"color:#4A4F57\">Допустими изключения</span><div class=\"ds-aside\"><p>Отделни части от горните изисквания може да отсъстват, ако изборът е обоснован.</p></div></div>",
+      "css": ".ds-row{display:grid;grid-template-columns:34mm 1fr;column-gap:8mm;background:#F6F7F5;color:#121417;font-feature-settings:'locl' 0;} .ds-rl{font:650 6.8pt/1.3 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;padding-top:2.8mm;} .ds-aside{padding:2.4mm 0 2.6mm;border-top:.5pt solid #C9CCD1;border-bottom:.5pt solid #C9CCD1;font:italic 400 10pt/14.6pt 'Source Serif 4',Georgia,serif;} .ds-aside p{margin:0;}"
+    },
+    {
+      "name": "Key Facts",
+      "kind": "card",
+      "refersTo": "keyfacts-cell",
+      "description": "The front page's form grammar in the body: a three-column ruled grid of short facts.",
+      "html": "<dl class=\"ds-kf\"><div><dt>Renderer</dt><dd>Headless Chrome</dd></div><div><dt>Page size</dt><dd>A4 portrait</dd></div><div><dt>Headings</dt><dd>Roboto Flex</dd></div></dl>",
+      "css": ".ds-kf{display:grid;grid-template-columns:repeat(3,1fr);margin:0;border-top:1pt solid #121417;border-left:.5pt solid #121417;background:#F6F7F5;color:#121417;} .ds-kf>div{border-right:.5pt solid #121417;border-bottom:.5pt solid #121417;padding:2mm 3mm 2.6mm;} .ds-kf dt{margin-bottom:1.5mm;font:600 6.5pt/1.2 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:#4A4F57;} .ds-kf dd{margin:0;font:620 10.5pt/1.3 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:92%;font-variant-numeric:tabular-nums;}"
+    },
+    {
+      "name": "Numbered Requirements",
+      "kind": "custom",
+      "refersTo": "requirement",
+      "description": "Requirements numbered across the document, numbers in the rail, hairline-bounded rows.",
+      "html": "<ol class=\"ds-req\"><li><p>The application has a clearly defined goal and at least one failure condition.</p></li><li><p>The user makes decisions that affect the outcome.</p></li></ol>",
+      "css": ".ds-req{list-style:none;margin:0;padding:0 0 0 42mm;counter-reset:req;background:#F6F7F5;color:#121417;font:400 10pt/14.6pt 'Source Serif 4',Georgia,serif;} .ds-req>li{position:relative;counter-increment:req;padding:1.6mm 0 1.8mm;border-top:.5pt solid #C9CCD1;} .ds-req>li:last-child{border-bottom:.5pt solid #C9CCD1;} .ds-req>li::before{content:counter(req);position:absolute;left:-42mm;top:1.4mm;width:34mm;font:700 11pt/1.3 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:88%;font-variant-numeric:tabular-nums;} .ds-req p{margin:0;}"
+    },
+    {
+      "name": "Steps",
+      "kind": "custom",
+      "refersTo": "step",
+      "description": "A procedure with Step n labels in the rail and hairlines between steps.",
+      "html": "<ol class=\"ds-steps\"><li><p>Describe the document in doc.json.</p></li><li><p>Write the body with the shared vocabulary.</p></li></ol>",
+      "css": ".ds-steps{list-style:none;margin:0;padding:0 0 0 42mm;counter-reset:step;background:#F6F7F5;color:#121417;font:400 10pt/14.6pt 'Source Serif 4',Georgia,serif;} .ds-steps>li{position:relative;counter-increment:step;padding:2mm 0 2.4mm;border-top:.5pt solid #C9CCD1;} .ds-steps>li:last-child{border-bottom:.5pt solid #C9CCD1;} .ds-steps>li::before{content:'Step ' counter(step);position:absolute;left:-42mm;top:2.3mm;width:34mm;font:650 7pt/1.4 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.08em;text-transform:uppercase;} .ds-steps p{margin:0;}"
+    },
+    {
+      "name": "Labelled Code Block",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "Full-width tint band between hairlines; label in the rail, code in the measure.",
+      "html": "<pre class=\"ds-pre\"><span class=\"ds-pre-l\">Shell</span>python3 scripts/render.py doc.json --out docs/report.pdf</pre>",
+      "css": ".ds-pre{position:relative;margin:0;background:#ECEEEC;color:#121417;border-top:.5pt solid #C9CCD1;border-bottom:.5pt solid #C9CCD1;padding:3.5mm 4mm 3.5mm 42mm;font:400 8pt/1.55 'JetBrains Mono',Menlo,monospace;white-space:pre-wrap;} .ds-pre-l{position:absolute;left:4mm;top:3.9mm;width:30mm;font:600 6.5pt/1.3 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.1em;text-transform:uppercase;color:#4A4F57;}"
+    },
+    {
+      "name": "Ruled Table",
+      "kind": "custom",
+      "refersTo": "table",
+      "description": "Caption above, uppercase head between strong rules, hairline rows, strong closing rule.",
+      "html": "<table class=\"ds-table\"><caption><span>Table 1</span>Rendering options</caption><thead><tr><th>Option</th><th>Outcome</th></tr></thead><tbody><tr><td>WeasyPrint</td><td>Not installed</td></tr><tr><td>Headless Chrome</td><td>Chosen</td></tr></tbody></table>",
+      "css": ".ds-table{border-collapse:collapse;width:100%;background:#F6F7F5;color:#121417;font:400 8.5pt/1.4 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-variant-numeric:tabular-nums;} .ds-table caption{caption-side:top;text-align:left;padding:0 0 2mm;font:italic 400 8.5pt/1.35 'Source Serif 4',Georgia,serif;color:#4A4F57;} .ds-table caption span{display:inline-block;width:42mm;font:normal 650 7pt 'Roboto Flex','Helvetica Neue',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#121417;} .ds-table th,.ds-table td{text-align:left;vertical-align:top;padding:1.8mm 3mm 1.8mm 0;border-bottom:.5pt solid #C9CCD1;} .ds-table thead th{font:600 6.8pt/1.2 'Roboto Flex','Helvetica Neue',Arial,sans-serif;font-stretch:112%;letter-spacing:.08em;text-transform:uppercase;color:#4A4F57;border-top:1pt solid #121417;border-bottom:1pt solid #121417;padding-top:2mm;} .ds-table tbody tr:last-child td{border-bottom:1pt solid #121417;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "One Form, Five Kinds",
+    "overview": "**Creative North Star: \"One Form, Five Kinds\"**\n\nEvery document is filled in on the same ruled form. Five kinds (report, memo, guide, proposal, technical requirements) share one design language and one set of front-page parts: a 3pt masthead rule with the kind name in extended capitals on the left and the date on the right, a condensed grotesk title, an optional italic serif subtitle, and a ruled grid of form cells holding the author, the date, any extra fields, a summary and the key point struck in solid cobalt. What changes per kind is only the order and placement of those parts, chosen for the document's job: a report sets its title low over the form, a proposal leads its form with the recommendation, a guide or requirements document sets its title high and anchors a contents map at the foot, and a memo drops the cover and starts its body on page one.\n\nBody pages are the same for every kind. A 34mm rail on the left holds section numbers, sub-section numbers and the label of every component; a 118mm measure carries serif prose; wide elements span both. The material is cool paper and near-black ink, structured by rules of graded weight rather than boxes or shadows. Colour is rationed by meaning: cobalt marks decisions and the front-page key point, amber marks warnings, and everything else is ink on paper. Density is that of a well-set working document: 10pt serif on a 14.6pt step, generous space before numbered sections, nothing decorative.\n\nThe system is print-native and bilingual. It is defined in physical units (pt, mm), printed to A4 by headless Chrome through `@page` margin boxes, and has no hover, focus, motion or responsive behaviour. Every face covers Latin and Cyrillic, and every printed word of apparatus (kind names, field names, rail labels, dates) switches between English and Bulgarian with the document's language. A document ends with its last body section: there is no closing colophon, no issue number and no series name.",
+    "keyCharacteristics": [
+      "One set of front-page parts (masthead, title, ruled form, cobalt key point, contents map), arranged per kind.",
+      "A left rail (34mm) that carries numbers and component labels; prose never enters it.",
+      "Roboto Flex on its width axis for the title, headings, labels and form; Source Serif 4 for prose; JetBrains Mono only for code.",
+      "Structure by rules of graded weight; no shadows, no rounded containers.",
+      "Colour by role only: cobalt for decisions and the key point, amber for warnings.",
+      "Author and date on the front-page form and in every following page's running footer.",
+      "English and Bulgarian with one set of Cyrillic letterforms across all three faces."
+    ],
+    "rules": [
+      {
+        "name": "The Rationed Colour Rule",
+        "body": "Cobalt means the key point or a decision and amber means warning. Neither is used for emphasis, links, headings, diagrams or decoration. A page with no decision and no warning is ink on paper.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Solid Block Rule",
+        "body": "The solid cobalt block appears at most once per document: the key-point cell in the front-page form. Decisions in the body get a wash, not a solid fill.",
+        "section": "colors"
+      },
+      {
+        "name": "The Width Axis Rule",
+        "body": "Hierarchy in Roboto Flex is carried by width as much as weight: condensed (70–95%) for anything read as a title or heading, extended (112–125%) for tracked uppercase labels. Display text is never at default width. Never fake width by scaling.",
+        "section": "typography"
+      },
+      {
+        "name": "The Three Voices Rule",
+        "body": "Roboto Flex speaks for the form and its apparatus, Source Serif 4 speaks the prose, JetBrains Mono speaks only code and identifiers. Prose is never set in the grotesk; labels are never set in the serif.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Cyrillic Rule",
+        "body": "`font-feature-settings: \"locl\" 0` is set on the body and inherited everywhere, so Bulgarian text uses one set of Cyrillic letterforms across all three faces instead of switching to localized forms in some of them.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Every number that sits in a column or identifies something (dates, section and requirement numbers, contents numbers, step numbers, the page counter, table data, key facts) uses tabular figures.",
+        "section": "typography"
+      },
+      {
+        "name": "The Rail Rule",
+        "body": "The rail holds numbers and labels, never prose. Every component's identity is named in the rail at the top of the component, aligned to its first rule.",
+        "section": "layout"
+      },
+      {
+        "name": "The Indent Rule",
+        "body": "All horizontal offsets derive from the rail (34mm), the gap (8mm) or their sum (42mm). Do not introduce new indents.",
+        "section": "layout"
+      },
+      {
+        "name": "The Shared Parts Rule",
+        "body": "A new kind is a new arrangement of the existing front-page parts, never new parts or a new style. Kinds differ in order, placement and labels only.",
+        "section": "layout"
+      },
+      {
+        "name": "The Graded Rule Rule",
+        "body": "Weight of line equals weight of boundary: 0.5pt within, 1pt between sections, 1.5pt over the form, 3pt only for the masthead. Never add a shadow or an outline box to show grouping.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** derive every horizontal offset from the rail (34mm), gap (8mm) or indent (42mm), and every vertical gap from the 14.6pt step.",
+      "**Do** build a kind's front page only from the shared parts: masthead, title, subtitle, ruled form, cobalt key point and contents map.",
+      "**Do** set titles and headings in condensed Roboto Flex (70–95%) and labels in extended tracked uppercase (112–125%).",
+      "**Do** keep `font-feature-settings: \"locl\" 0` so Cyrillic keeps one set of letterforms across all three faces.",
+      "**Do** keep cobalt for decisions and the key point, and amber for warnings; everything else is Ink, Graphite and rules.",
+      "**Do** use tabular figures for any number that identifies or aligns.",
+      "**Do** print the author and date on the front-page form and in every following page's running footer.",
+      "**Do** add every printed apparatus word in both English and Bulgarian (the renderer's language table or a `:lang(bg)` rule)."
+    ],
+    "donts": [
+      "**Don't** add per-document CSS, inline styles or new components; the stylesheet is the only design source.",
+      "**Don't** set Roboto Flex at its default width for any title or heading.",
+      "**Don't** use cobalt or amber for links, headings, emphasis or diagram fills, and don't add a second solid cobalt block.",
+      "**Don't** add shadows, rounded containers or side-only accent stripes; the only radius is 1pt on inline code.",
+      "**Don't** set prose in the grotesk or labels in the serif; don't use JetBrains Mono outside code and identifiers.",
+      "**Don't** add a closing colophon, issue number or series name; a document ends with its last section.",
+      "**Don't** print any reference to Claude, an AI or the session in labels, running heads or the form.",
+      "**Don't** add a tracked-caps line above a title or heading; the masthead kind name is the only label above the title.",
+      "**Don't** add company branding, logos or brand colours; the byline is personal."
+    ]
+  }
+}

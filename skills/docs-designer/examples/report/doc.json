@@ -1,0 +1,9 @@
+{
+  "kind": "report",
+  "title": "Choosing a PDF renderer for docs-designer",
+  "subtitle": "A reference report that uses every body component",
+  "abstract": "docs-designer prints documents through one fixed template. This report records how the renderer was chosen and shows each building block of the design, so changes to the stylesheet can be checked in a single render.",
+  "outcome": "Headless Chrome renders every document: it was already installed and supports the page features the design needs.",
+  "meta": {"Status": "Final"},
+  "body": "body.html"
+}

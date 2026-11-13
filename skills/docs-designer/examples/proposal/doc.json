@@ -1,0 +1,8 @@
+{
+  "kind": "proposal",
+  "title": "One design system, five document kinds",
+  "abstract": "Documents of different kinds need different front pages, but should still look like one family. This proposal keeps one design language and adds a front-page layout per kind.",
+  "outcome": "Adopt typed layouts: report, memo, guide, proposal and technical requirements, chosen with one field.",
+  "meta": {"Prepared for": "Document authors", "Status": "For approval"},
+  "body": "body.html"
+}

@@ -1,0 +1,24 @@
+<h2>Before you start</h2>
+<p>You need Python 3 and Google Chrome or Chromium. Nothing else is installed.</p>
+
+<h2>Describe the document</h2>
+<p>Create <code>doc.json</code> next to your body file. Pick a kind and, for Bulgarian, set the language.</p>
+<pre data-label="doc.json"><code>{
+  "kind": "guide",
+  "lang": "en",
+  "title": "Writing a document",
+  "body": "body.html"
+}</code></pre>
+
+<h2>Write the body</h2>
+<ol class="steps">
+  <li><p>Start every section with an <code>&lt;h2&gt;</code>; sections are numbered automatically.</p></li>
+  <li><p>Use callouts for decisions and warnings, and a table for comparisons.</p></li>
+  <li><p>Keep code lines short so they don't wrap.</p></li>
+</ol>
+
+<h2>Print it</h2>
+<pre data-label="Shell"><code>python3 scripts/render.py doc.json --out guide.pdf</code></pre>
+<div class="callout warning">
+  <p>The date is always the moment you print. Re-print to update it.</p>
+</div>

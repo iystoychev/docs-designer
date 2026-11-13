@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="utf-8">
+<title>{{TITLE}}</title>
+<meta name="author" content="{{AUTHOR}}">
+<meta name="date" content="{{DATE_ISO}}">
+<link rel="stylesheet" href="{{STYLESHEET}}">{{HEAD_EXTRA}}
+<style>
+@page {
+  @top-left { content: {{CSS_KIND}}; }
+  @top-right { content: {{CSS_TITLE}}; }
+  @bottom-left { content: {{CSS_BYLINE}}; }
+}
+/* The front page carries author and date itself; keep its margins clear. */
+@page :first {
+  @top-left { content: none; } @top-right { content: none; } @bottom-left { content: none; }
+}
+</style>
+</head>
+<body class="kind-{{KIND}}">
+{{FRONT}}
+<main class="doc">
+{{BODY}}
+</main>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "kind": "memo",
+  "title": "Headline font changes to Roboto Flex",
+  "outcome": "From now on every document sets headings and labels in Roboto Flex, so Bulgarian and English documents share one look.",
+  "meta": {"To": "Everyone who writes documents"},
+  "body": "body.html"
+}

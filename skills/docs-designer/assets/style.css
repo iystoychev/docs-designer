@@ -1,0 +1,359 @@
+/* docs-designer stylesheet: one design language for every document kind.
+   Do not add per-document CSS. Running header/footer strings are injected by
+   render.py into template.html; this file owns their typography. */
+
+/* ---------- Fonts (vendored, SIL OFL; Latin + Cyrillic) ---------- */
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 700; font-display: block;
+  src: url(fonts/JetBrainsMono-normal-cyrillic-ext.woff2) format("woff2"); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 700; font-display: block;
+  src: url(fonts/JetBrainsMono-normal-cyrillic.woff2) format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 700; font-display: block;
+  src: url(fonts/JetBrainsMono-normal-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 700; font-display: block;
+  src: url(fonts/JetBrainsMono-normal-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Roboto Flex"; font-style: normal; font-weight: 100 1000; font-stretch: 25% 151%; font-display: block;
+  src: url(fonts/RobotoFlex-normal-cyrillic-ext.woff2) format("woff2"); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+@font-face { font-family: "Roboto Flex"; font-style: normal; font-weight: 100 1000; font-stretch: 25% 151%; font-display: block;
+  src: url(fonts/RobotoFlex-normal-cyrillic.woff2) format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Roboto Flex"; font-style: normal; font-weight: 100 1000; font-stretch: 25% 151%; font-display: block;
+  src: url(fonts/RobotoFlex-normal-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Roboto Flex"; font-style: normal; font-weight: 100 1000; font-stretch: 25% 151%; font-display: block;
+  src: url(fonts/RobotoFlex-normal-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 200 900; font-display: block;
+  src: url(fonts/SourceSerif4-italic-cyrillic-ext.woff2) format("woff2"); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+@font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 200 900; font-display: block;
+  src: url(fonts/SourceSerif4-italic-cyrillic.woff2) format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 200 900; font-display: block;
+  src: url(fonts/SourceSerif4-italic-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 200 900; font-display: block;
+  src: url(fonts/SourceSerif4-italic-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 200 900; font-display: block;
+  src: url(fonts/SourceSerif4-normal-cyrillic-ext.woff2) format("woff2"); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 200 900; font-display: block;
+  src: url(fonts/SourceSerif4-normal-cyrillic.woff2) format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 200 900; font-display: block;
+  src: url(fonts/SourceSerif4-normal-latin-ext.woff2) format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 200 900; font-display: block;
+  src: url(fonts/SourceSerif4-normal-latin.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* ---------- Tokens ---------- */
+:root {
+  --paper: #F6F7F5;
+  --ink: #121417;
+  --ink-2: #4A4F57;          /* secondary text */
+  --rule: #C9CCD1;
+  --rule-strong: #121417;
+  --tint: #ECEEEC;           /* code surfaces, table group rows */
+  --decision: #2B3FD6;       /* cobalt: decisions and the front-page key point only */
+  --decision-wash: #E9ECFB;
+  --warning: #8A5A00;        /* amber text */
+  --warning-mark: #E0A100;
+  --warning-wash: #FBF2DC;
+
+  --sans: "Roboto Flex", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Source Serif 4", Georgia, serif;
+  --mono: "JetBrains Mono", Menlo, monospace;
+
+  /* geometry: 160mm text block = 34mm rail + 8mm gap + 118mm measure */
+  --rail: 34mm;
+  --gap: 8mm;
+  --indent: calc(var(--rail) + var(--gap));
+  --step: 14.6pt;            /* one baseline unit */
+}
+
+/* ---------- Pages ---------- */
+@page {
+  size: A4;
+  margin: 22mm 25mm 24mm 25mm;
+  background: #F6F7F5;
+  @top-left {
+    font: 600 6.8pt/1 "Roboto Flex", sans-serif; font-stretch: 112%; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #4A4F57; vertical-align: bottom; padding-bottom: 5mm; white-space: nowrap;
+  }
+  @top-right {
+    font: 500 6.8pt/1.3 "Roboto Flex", sans-serif; color: #4A4F57; vertical-align: bottom; padding-bottom: 5mm; text-align: right;
+  }
+  @bottom-left {
+    font: 500 7.5pt/1 "Roboto Flex", sans-serif; color: #121417; vertical-align: top; padding-top: 2.5mm;
+    border-top: 0.5pt solid #C9CCD1; margin-top: 3.5mm;
+  }
+  @bottom-right {
+    content: counter(page) " / " counter(pages);
+    font: 650 7.5pt/1 "Roboto Flex", sans-serif; font-variant-numeric: tabular-nums; color: #121417; vertical-align: top; padding-top: 2.5mm;
+    border-top: 0.5pt solid #C9CCD1; margin-top: 3.5mm;
+  }
+}
+@page :first { margin: 18mm 20mm 24mm; }
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html { background: var(--paper); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin: 0; color: var(--ink); background: var(--paper);
+  font-family: var(--serif); font-size: 10pt; line-height: var(--step);
+  font-optical-sizing: auto; font-kerning: normal; hyphens: manual; orphans: 3; widows: 3;
+  font-feature-settings: "locl" 0; /* one set of Cyrillic forms across all three faces */
+}
+::selection { background: var(--decision-wash); color: var(--ink); }
+a { color: inherit; text-decoration: underline; text-decoration-thickness: 0.5pt; text-underline-offset: 2pt; text-decoration-color: var(--ink-2); }
+p { margin: 0 0 calc(var(--step) * 0.6); text-wrap: pretty; }
+strong, b { font-weight: 650; }
+
+/* ---------- Front page: shared parts ---------- */
+.masthead {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 6mm;
+  border-top: 3pt solid var(--rule-strong); padding-top: 3mm;
+  font-family: var(--sans);
+}
+.masthead .kind { font-size: 9pt; font-weight: 750; font-stretch: 125%; letter-spacing: 0.16em; text-transform: uppercase; }
+.masthead .when { font-size: 9pt; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+.front h1 {
+  margin: 0; max-width: 165mm;
+  font-family: var(--sans); font-weight: 720; font-stretch: 70%;
+  font-size: 48pt; line-height: 0.98; letter-spacing: -0.01em; word-spacing: 0.1em; text-wrap: balance;
+}
+.front h1 .w { white-space: nowrap; } /* render.py wraps each word: never split a hyphenated name */
+.front .subtitle {
+  margin: 5mm 0 0; max-width: 135mm;
+  font-family: var(--serif); font-style: italic; font-size: 15pt; line-height: 1.3; color: var(--ink-2); text-wrap: balance;
+}
+
+/* the ruled form: cells flow and stretch so every row closes on the right edge */
+.form {
+  display: flex; flex-wrap: wrap;
+  border-top: 1.5pt solid var(--rule-strong); border-left: 0.5pt solid var(--rule-strong);
+}
+.cell {
+  flex: 1 1 25%; min-height: 17mm; padding: 2.2mm 3mm 3.2mm;
+  border-right: 0.5pt solid var(--rule-strong); border-bottom: 0.5pt solid var(--rule-strong);
+}
+.cell.wide-2 { flex-basis: 50%; }
+.cell.full { flex-basis: 100%; }
+.field {
+  display: block; margin-bottom: 2mm;
+  font: 600 6.3pt/1.1 var(--sans); font-stretch: 112%; letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink-2);
+}
+.value { display: block; margin: 0; font: 620 11pt/1.25 var(--sans); font-stretch: 92%; }
+.abstract .value { font: 400 11.5pt/1.5 var(--serif); max-width: 150mm; }
+.cell.outcome { background: var(--decision); color: #fff; padding-bottom: 5mm; }
+.outcome .field { color: rgba(255, 255, 255, 0.84); }
+.outcome .value { font: 650 15pt/1.22 var(--sans); font-stretch: 88%; max-width: 160mm; text-wrap: pretty; }
+
+/* contents: the section list the renderer builds from the body's h2 */
+.contents { padding-top: 6mm; }
+.contents ol {
+  margin: 0; padding: 0; list-style: none; counter-reset: toc;
+  columns: 2; column-gap: 8mm; border-top: 1pt solid var(--rule-strong);
+}
+.contents li {
+  counter-increment: toc; break-inside: avoid; display: grid; grid-template-columns: 8mm 1fr;
+  padding: 2mm 0 2.2mm; border-bottom: 0.5pt solid var(--rule);
+  font: 560 10.5pt/1.3 var(--sans); font-stretch: 92%;
+}
+.contents li::before { content: counter(toc); font-weight: 750; font-variant-numeric: tabular-nums; }
+
+/* ---------- Front page: layouts by kind ---------- */
+/* report, proposal: a full cover page with the title set low over the form */
+.cover { break-after: page; height: 255mm; display: flex; flex-direction: column; }
+.cover .titling { margin-top: auto; padding-bottom: 11mm; }
+/* guide, requirements: title high, then the form, then the contents as a map of the document */
+.cover-map .titling { margin-top: 30mm; }
+.cover-map .form { margin-top: 0; }
+.cover-map .contents { margin-top: auto; }
+.kind-proposal .cover .titling { padding-bottom: 9mm; }
+/* memo: no cover page; a compact head, then the body on the same page */
+.memo-head { margin-bottom: calc(var(--step) * 2.4); }
+.memo-head h1 { margin-top: 14mm; font-size: 30pt; font-stretch: 75%; }
+.memo-head .subtitle { font-size: 13pt; margin-top: 3mm; }
+.memo-head .form { margin-top: 8mm; }
+
+/* ---------- Body grid: rail + measure ---------- */
+.doc { padding-left: var(--indent); counter-reset: h2 figure table req; }
+.doc > :first-child { margin-top: 0; }
+
+.doc h2 {
+  position: relative; counter-increment: h2; counter-reset: h3;
+  margin: calc(var(--step) * 2.2) 0 calc(var(--step) * 0.7);
+  padding-top: 2.5mm; border-top: 1pt solid var(--rule-strong);
+  font: 650 15pt/1.15 var(--sans); font-stretch: 85%; letter-spacing: -0.005em; word-spacing: 0.06em; text-wrap: balance;
+  break-after: avoid;
+}
+.doc > h2:first-child { margin-top: 0; }
+.doc h2::before {
+  content: counter(h2);
+  position: absolute; left: calc(var(--indent) * -1); top: -1pt; width: var(--rail);
+  padding-top: 2.5mm; border-top: 1pt solid var(--rule-strong);
+  font: 700 15pt/1.15 var(--sans); font-stretch: 85%; font-variant-numeric: tabular-nums;
+}
+.doc h3 {
+  position: relative; counter-increment: h3;
+  margin: calc(var(--step) * 1.4) 0 calc(var(--step) * 0.35);
+  font: 650 10.5pt/1.35 var(--sans); font-stretch: 95%; break-after: avoid;
+}
+.doc h3::before {
+  content: counter(h2) "." counter(h3);
+  position: absolute; left: calc(var(--indent) * -1); width: var(--rail);
+  font: 500 9pt/1.55 var(--sans); font-variant-numeric: tabular-nums; color: var(--ink-2);
+}
+.doc h2 + h3 { margin-top: calc(var(--step) * 0.5); }
+.doc h4 {
+  margin: var(--step) 0 calc(var(--step) * 0.3);
+  font: 650 9.5pt/1.35 var(--sans); font-stretch: 95%; break-after: avoid;
+}
+
+/* lists */
+.doc ul, .doc ol { margin: 0 0 calc(var(--step) * 0.6); padding-left: 5mm; }
+.doc li { margin-bottom: calc(var(--step) * 0.2); padding-left: 1mm; }
+.doc ul > li::marker { content: "–  "; color: var(--ink-2); }
+.doc ol > li::marker { font: 600 8.5pt var(--sans); font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.doc li > ul, .doc li > ol { margin: calc(var(--step) * 0.2) 0 0; }
+
+/* inline code */
+code { font-family: var(--mono); font-size: 0.86em; font-variant-ligatures: none; }
+:not(pre) > code { background: var(--tint); padding: 0.2mm 1mm; border-radius: 1pt; overflow-wrap: anywhere; }
+
+/* lede: optional opening paragraph of the body */
+.doc .lede { font-size: 12.5pt; line-height: 1.5; margin-bottom: var(--step); }
+
+/* ---------- Wide elements span rail + measure ---------- */
+.doc pre, .doc table, .doc figure, .doc .keyfacts { margin-left: calc(var(--indent) * -1); width: calc(100% + var(--indent)); }
+
+/* code blocks */
+.doc pre {
+  position: relative; margin-top: calc(var(--step) * 0.8); margin-bottom: var(--step);
+  background: var(--tint); border-top: 0.5pt solid var(--rule); border-bottom: 0.5pt solid var(--rule);
+  padding: 3.5mm 4mm 3.5mm var(--indent);
+  font: 400 8pt/1.55 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 2;
+}
+.doc pre[data-label]::before {
+  content: attr(data-label);
+  position: absolute; left: 4mm; top: 3.9mm; width: calc(var(--rail) - 4mm);
+  font: 600 6.5pt/1.3 var(--sans); font-stretch: 112%; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2);
+  white-space: normal; overflow-wrap: anywhere;
+}
+.doc pre code { font-size: inherit; background: none; padding: 0; }
+/* render.py wraps each source line: wrapped continuations hang 4ch in, so indentation stays truthful */
+.doc pre .ln { display: block; padding-left: 4ch; text-indent: -4ch; }
+.doc pre .ln:empty::before { content: "\200B"; }
+
+/* tables */
+.doc table {
+  border-collapse: collapse; margin-top: calc(var(--step) * 0.8); margin-bottom: var(--step);
+  font: 400 8.5pt/1.4 var(--sans); font-variant-numeric: tabular-nums; counter-increment: table;
+}
+.doc table:not(.long) { break-inside: avoid; } /* keeps the caption with its rows */
+.doc thead { display: table-header-group; }
+.doc tr { break-inside: avoid; }
+.doc caption {
+  caption-side: top; text-align: left; padding: 0 0 2mm;
+  font: italic 400 8.5pt/1.35 var(--serif); color: var(--ink-2);
+}
+.doc caption::before {
+  content: "Table " counter(table); display: inline-block; width: var(--indent);
+  font: normal 650 7pt var(--sans); font-stretch: 112%; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink);
+}
+.doc th, .doc td { text-align: left; vertical-align: top; padding: 1.8mm 3mm 1.8mm 0; border-bottom: 0.5pt solid var(--rule); }
+.doc thead th {
+  font: 600 6.8pt/1.2 var(--sans); font-stretch: 112%; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2);
+  border-top: 1pt solid var(--rule-strong); border-bottom: 1pt solid var(--rule-strong); padding-top: 2mm;
+}
+.doc tbody tr:last-child td { border-bottom: 1pt solid var(--rule-strong); }
+.doc td.num, .doc th.num { text-align: right; }
+.doc th:last-child, .doc td:last-child { padding-right: 0; }
+.doc tr.group td { font-weight: 650; background: var(--tint); border-top: 0.5pt solid var(--rule-strong); }
+.doc tr.group td:first-child { padding-left: 2mm; }
+.doc tr.group td:last-child { padding-right: 2mm; }
+.doc tfoot td { font-weight: 750; border-top: 1.5pt solid var(--rule-strong); border-bottom: 0; padding-top: 2.2mm; }
+
+/* figures */
+.doc figure {
+  margin-top: calc(var(--step) * 0.8); margin-bottom: var(--step); break-inside: avoid; counter-increment: figure;
+  display: grid; grid-template-columns: var(--rail) 1fr; column-gap: var(--gap);
+}
+.doc figure > :not(figcaption) { grid-column: 2; max-width: 100%; margin: 0; }
+.doc figure img, .doc figure svg { display: block; max-width: 100%; height: auto; }
+.doc figcaption { grid-column: 1; grid-row: 1; font: 400 7.5pt/1.4 var(--sans); color: var(--ink-2); }
+.doc figcaption::before {
+  content: "Figure " counter(figure); display: block; margin-bottom: 1mm;
+  font: 650 7pt var(--sans); font-stretch: 112%; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink);
+}
+
+/* blockquote */
+.doc blockquote {
+  margin: var(--step) 0; padding: 2mm 0 0; border-top: 0.5pt solid var(--rule);
+  font-style: italic; font-size: 11pt; line-height: 1.5; break-inside: avoid;
+}
+.doc blockquote p:last-of-type { margin-bottom: 1mm; }
+.doc blockquote cite { display: block; font: normal 500 7.5pt/1.3 var(--sans); color: var(--ink-2); }
+
+/* callouts: the label sits in the rail; colour only by role; data-label renames it */
+.doc .callout {
+  position: relative; margin: var(--step) 0; padding: 2.4mm 0 2.6mm;
+  border-top: 0.5pt solid var(--rule-strong); border-bottom: 0.5pt solid var(--rule-strong); break-inside: avoid;
+}
+.doc .callout > :last-child { margin-bottom: 0; }
+.doc .callout::before {
+  content: "Note"; position: absolute; left: calc(var(--indent) * -1); top: 2.8mm; width: var(--rail);
+  font: 650 6.8pt/1.3 var(--sans); font-stretch: 112%; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
+}
+.doc .callout.decision, .doc .callout.warning { padding-left: 3.5mm; padding-right: 3.5mm; }
+.doc .callout.decision { background: var(--decision-wash); border-color: var(--decision); }
+.doc .callout.decision::before { content: "Decision"; color: var(--decision); }
+.doc .callout.warning { background: var(--warning-wash); border-color: var(--warning-mark); }
+.doc .callout.warning::before { content: "Warning"; color: var(--warning); }
+/* an allowance or exception: softer than a note, set in italic */
+.doc .callout.aside { border-top-color: var(--rule); border-bottom-color: var(--rule); font-style: italic; }
+.doc .callout.aside::before { content: "Aside"; color: var(--ink-2); }
+
+/* key facts: a ruled form grid, the front page's grammar inside the body */
+.doc .keyfacts {
+  display: grid; grid-template-columns: repeat(3, 1fr); margin-top: calc(var(--step) * 0.8); margin-bottom: var(--step);
+  border-top: 1pt solid var(--rule-strong); border-left: 0.5pt solid var(--rule-strong); break-inside: avoid;
+}
+.doc .keyfacts > div { border-right: 0.5pt solid var(--rule-strong); border-bottom: 0.5pt solid var(--rule-strong); padding: 2mm 3mm 2.6mm; }
+.doc .keyfacts dt { margin-bottom: 1.5mm; font: 600 6.5pt/1.2 var(--sans); font-stretch: 112%; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
+.doc .keyfacts dd { margin: 0; font: 620 10.5pt/1.3 var(--sans); font-stretch: 92%; font-variant-numeric: tabular-nums; }
+
+/* steps: a procedure with step labels in the rail */
+.doc ol.steps { list-style: none; padding: 0; margin: calc(var(--step) * 0.6) 0 var(--step); counter-reset: step; }
+.doc ol.steps > li {
+  position: relative; counter-increment: step; padding: 2mm 0 2.4mm; margin: 0;
+  border-top: 0.5pt solid var(--rule); break-inside: avoid;
+}
+.doc ol.steps > li:last-child { border-bottom: 0.5pt solid var(--rule); }
+.doc ol.steps > li:has(> pre:last-child) { padding-bottom: 0; }
+.doc ol.steps > li:last-child:has(> pre:last-child) { border-bottom: 0; }
+.doc ol.steps pre { border-bottom: 0; margin-left: 0; width: auto; padding-left: 4mm; }
+.doc ol.steps > li > pre:last-child { margin-bottom: 0; }
+.doc ol.steps pre[data-label]::before { position: static; display: block; width: auto; margin-bottom: 1.5mm; }
+.doc ol.steps > li::before {
+  content: "Step " counter(step); position: absolute; left: calc(var(--indent) * -1); top: 2.3mm; width: var(--rail);
+  font: 650 7pt/1.4 var(--sans); font-stretch: 112%; letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums;
+}
+.doc ol.steps > li > :last-child { margin-bottom: 0; }
+
+/* requirements: numbered across the whole document, numbers in the rail */
+.doc ol.requirements { list-style: none; padding: 0; margin: calc(var(--step) * 0.3) 0 var(--step); }
+.doc ol.requirements > li {
+  position: relative; counter-increment: req; padding: 1.6mm 0 1.8mm; margin: 0;
+  border-top: 0.5pt solid var(--rule); break-inside: avoid;
+}
+.doc ol.requirements > li:last-child { border-bottom: 0.5pt solid var(--rule); }
+.doc ol.requirements > li::before {
+  content: counter(req); position: absolute; left: calc(var(--indent) * -1); top: 1.4mm; width: var(--rail);
+  font: 700 11pt/1.3 var(--sans); font-stretch: 88%; font-variant-numeric: tabular-nums;
+}
+.doc ol.requirements > li > :last-child { margin-bottom: 0; }
+
+/* ---------- Labels in other languages ---------- */
+:lang(bg) .doc .callout::before { content: "Бележка"; }
+:lang(bg) .doc .callout.decision::before { content: "Решение"; }
+:lang(bg) .doc .callout.warning::before { content: "Внимание"; }
+:lang(bg) .doc .callout.aside::before { content: "Забележка"; }
+:lang(bg) .doc ol.steps > li::before { content: "Стъпка " counter(step); }
+:lang(bg) .doc caption::before { content: "Таблица " counter(table); }
+:lang(bg) .doc figcaption::before { content: "Фигура " counter(figure); }
+
+/* an explicit label always wins */
+.doc .callout[data-label]::before, :lang(bg) .doc .callout[data-label]::before { content: attr(data-label); }
