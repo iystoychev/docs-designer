@@ -95,7 +95,9 @@ Read the PDF back. Check that the front page shows the title, author and date, t
 
 ## GalleyDocs (optional)
 
-GalleyDocs is the user's library of these documents: every version kept, a chosen PDF theme, share links. It is reached through the **GalleyDocs connector** (tools `get_theme`, `save_doc`, `create_version`, `search`, `list_docs`, `get_doc`) or, in Claude Code, through `scripts/galley.py` after the user ran `galley.py login` once. Use whichever is available; skip this section when neither is.
+GalleyDocs is the user's library of these documents: every version kept, a chosen PDF theme, share links. It is reached through the **GalleyDocs connector** (tools `get_theme`, `save_doc`, `create_version`, `search`, `list_docs`, `get_doc`) or, in Claude Code, through `scripts/galley.py` after the user ran `galley.py login` once; then the render prints a `Galley:` line.
+
+The skill is complete without it. **When the connector's tools are not available and the render printed no `Galley:` line, skip this section entirely: do not offer to save, do not mention GalleyDocs, do not add `--save`, `--doc-id` or `--new-doc`.** Steps 1–6 above are the whole job.
 
 **Theme (before step 5).** With the connector, call `get_theme`, write its `{"name", "tokens"}` to `theme.json` next to doc.json and add `--theme theme.json` to the render command. With `galley.py login` the theme is applied automatically.
 

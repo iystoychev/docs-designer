@@ -316,9 +316,8 @@ def render(spec_path: Path, out: Path | None = None, author: str | None = None, 
     """Render a spec to PDF and record it as the most recent document. Without a
     theme, the user's GalleyDocs theme is used when GalleyDocs is set up. With
     save (or --doc-id/--new-doc, or auto-save), the render is saved to GalleyDocs."""
-    import galley  # noqa: E402  (local module; imported late so the server renderer never loads it)
     if theme is None:
-        theme = galley.default_theme()
+        theme = optional_galley("default_theme", None)
     page, info = build_page(spec_path, author, theme=theme)
     out = (out or Path.cwd() / "docs" / f"{slugify(info['title'])}-{datetime.now().date().isoformat()}.pdf").resolve()
     print_pdf(page, spec_path.parent.resolve(), out, keep_html)
@@ -328,9 +327,22 @@ def render(spec_path: Path, out: Path | None = None, author: str | None = None, 
         record(info)
     except OSError:
         pass  # the inspector is optional; a render never fails because of it
-    info["galley"] = galley.sync(info, spec_path, out, doc_id=doc_id, new_doc=new_doc,
-                                 save=save or bool(doc_id) or new_doc)
+    info["galley"] = optional_galley("sync", {"status": "error", "lines": []}, info, spec_path, out,
+                                     doc_id=doc_id, new_doc=new_doc, save=save or bool(doc_id) or new_doc)
     return info
+
+
+def optional_galley(name: str, fallback, *args, **kwargs):
+    """Call galley.<name>. GalleyDocs is optional: without it the skill works as before,
+    and nothing it does (a missing module, an unreachable or misbehaving server) may
+    fail a render. Errors become a Galley: line when the user asked to save."""
+    try:
+        import galley  # local module; imported late so the server renderer never loads it
+        return getattr(galley, name)(*args, **kwargs)
+    except Exception as e:  # noqa: BLE001 - optional integration, never worth failing a render for
+        if isinstance(fallback, dict) and kwargs.get("save"):
+            return {**fallback, "lines": [f"Galley: error: {e}"]}
+        return fallback
 
 
 def record(info: dict) -> None:
