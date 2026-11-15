@@ -195,29 +195,84 @@ INSPECTOR_HEAD = ('<base href="/doc/"><link rel="stylesheet" href="/assets/sheet
                   '<script src="/assets/inspector.js" defer></script>')
 
 
-# A colour theme recolours these tokens of style.css; fonts and layout never change.
+# A theme is a stylesheet layered after style.css (fonts, type, front pages, any of the
+# document markup; see assets/THEMING.md) plus colour tokens applied last.
 THEME_TOKENS = ("paper", "ink", "ink-2", "rule", "rule-strong", "tint", "decision", "decision-wash",
                 "warning", "warning-mark", "warning-wash")
 HEX_COLOR = re.compile(r"^#[0-9A-Fa-f]{6}$")
+THEME_MAX_BYTES = 64 * 1024
+# A theme restyles; it never loads anything: fonts come from fonts.css, images only as data: URLs.
+THEME_FORBIDDEN = re.compile(r"<|@import|@font-face|@charset|@namespace|expression\s*\(|javascript:|"
+                             r"behavior\s*:|-moz-binding", re.I)
+CSS_URL = re.compile(r"url\(\s*(['\"]?)(.*?)\1\s*\)", re.I | re.S)
+DATA_IMAGE = re.compile(r"^data:image/(png|svg\+xml)[;,]", re.I)
+CSS_COMMENT = re.compile(r"/\*.*?\*/", re.S)
+CSS_ESCAPE = re.compile(r"\\([0-9A-Fa-f]{1,6})\s?|\\(.)", re.S)
+
+
+def _unescape_css(css: str) -> str:
+    def one(m: re.Match) -> str:
+        if m.group(1):
+            n = int(m.group(1), 16)
+            return chr(n) if 0 < n <= 0x10FFFF else "\ufffd"
+        return m.group(2)
+    return CSS_ESCAPE.sub(one, css)
+
+
+def check_theme_css(css: str) -> str:
+    """A theme stylesheet as given, or RenderError. Checked with comments removed and
+    escapes decoded too, so neither can hide a forbidden construct."""
+    if len(css.encode("utf-8")) > THEME_MAX_BYTES:
+        raise RenderError(f"the theme stylesheet is larger than {THEME_MAX_BYTES // 1024} KB")
+    for text in (css, _unescape_css(CSS_COMMENT.sub("", css))):
+        m = THEME_FORBIDDEN.search(text)
+        if m:
+            raise RenderError(f"the theme stylesheet may not contain {m.group(0)!r}")
+        for _, url in CSS_URL.findall(text):
+            if not DATA_IMAGE.match(url.strip()):
+                raise RenderError("a theme may use only data:image/png or data:image/svg+xml URLs")
+    return css
+
+
+def normalize_theme(theme: dict | None) -> dict:
+    """{"css", "tokens"} from a theme, a GalleyDocs theme file, or a bare token map."""
+    if not theme:
+        return {"css": "", "tokens": {}}
+    if "css" in theme or "tokens" in theme:
+        return {"css": str(theme.get("css") or ""), "tokens": dict(theme.get("tokens") or {})}
+    return {"css": "", "tokens": dict(theme)}
 
 
 def theme_css(tokens: dict | None) -> str:
-    """A :root override for a colour theme. Unknown tokens and non-colour values are ignored."""
+    """A :root override for colour tokens. Unknown tokens and non-colour values are ignored."""
     decl = "".join(f"--{k}:{v};" for k, v in sorted((tokens or {}).items())
                    if k in THEME_TOKENS and HEX_COLOR.match(str(v)))
     return f"<style>:root{{{decl}}}</style>" if decl else ""
 
 
+def theme_head(theme: dict | None, stylesheet: str) -> str:
+    """The head markup for a theme: the font library and its stylesheet (when it has
+    one), then its colour tokens. Nothing at all without a theme."""
+    t = normalize_theme(theme)
+    head = ""
+    if t["css"].strip():
+        fonts = stylesheet.rsplit("/", 1)[0] + "/fonts.css"
+        head += f'<link rel="stylesheet" href="{html.escape(fonts, quote=True)}"><style>{check_theme_css(t["css"])}</style>'
+    return head + theme_css(t["tokens"])
+
+
 def load_theme(path: Path) -> dict:
-    """Read a theme file: {"name": ..., "tokens": {...}} or a bare token map."""
+    """Read a theme file ({"name", "css", "tokens"}, e.g. from the connector's get_theme,
+    or a bare token map) and check its stylesheet."""
     try:
         data = json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as e:
         fail(f"cannot read theme {path}: {e}")
-    tokens = data.get("tokens", data) if isinstance(data, dict) else None
-    if not isinstance(tokens, dict):
-        fail(f"theme {path} must hold a tokens object")
-    return tokens
+    if not isinstance(data, dict):
+        fail(f"theme {path} must be a JSON object")
+    theme = normalize_theme(data)
+    check_theme_css(theme["css"])
+    return theme
 
 
 def build_page(spec_path: Path, author: str | None = None, inspect: bool = False, *,
@@ -226,8 +281,8 @@ def build_page(spec_path: Path, author: str | None = None, inspect: bool = False
     """Fill the template for a spec. inspect=True tags every editable element with
     data-dd and points assets at the inspector server instead of the file system.
     A server renderer passes the revision's date, its own stylesheet URL and head
-    markup; a local render always uses the moment of rendering. theme recolours
-    the design (see THEME_TOKENS)."""
+    markup; a local render always uses the moment of rendering. theme restyles
+    the design (see normalize_theme and assets/THEMING.md)."""
     spec, body_path, body = load(spec_path)
     kind, lang_code, meta = spec.get("kind", "report"), spec.get("lang", "en"), spec.get("meta") or {}
     L, K = LANG[lang_code], LANG[lang_code]["kinds"][kind]
@@ -237,7 +292,7 @@ def build_page(spec_path: Path, author: str | None = None, inspect: bool = False
         stylesheet = "/assets/style.css" if inspect else (ASSETS / "style.css").as_uri()
     if head_extra is None:
         head_extra = INSPECTOR_HEAD if inspect else ""
-    head_extra += theme_css(theme)
+    head_extra += theme_head(theme, stylesheet)
     date_long = L["date"].format(d=now.day, m=L["months"][now.month - 1], y=now.year)
 
     def dd(ref: str) -> str:
@@ -362,7 +417,8 @@ def main():
     who = ap.add_mutually_exclusive_group()
     who.add_argument("--doc-id", help="GalleyDocs: this render is a new revision of that document")
     who.add_argument("--new-doc", action="store_true", help="GalleyDocs: this render starts a new document")
-    ap.add_argument("--theme", type=Path, help="colour theme JSON ({\"tokens\": {...}}, e.g. from the connector's get_theme)")
+    ap.add_argument("--theme", type=Path,
+                    help="theme JSON ({\"css\": ..., \"tokens\": {...}}, e.g. from the connector's get_theme)")
     ap.add_argument("--save", action="store_true", help="GalleyDocs: save this render to the library")
     a = ap.parse_args()
     try:

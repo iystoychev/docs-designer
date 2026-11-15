@@ -341,8 +341,9 @@ THEME_CACHE = render.STATE_DIR / "theme.json"
 
 
 def default_theme() -> dict | None:
-    """The colour theme the user chose in GalleyDocs, or None when GalleyDocs is not set up.
-    The last answer is cached so renders keep the theme when the server is unreachable."""
+    """The theme the user chose in GalleyDocs ({"css", "tokens"}), or None when GalleyDocs
+    is not set up. The last answer is cached so renders keep the theme when the server
+    is unreachable."""
     cfg = config()
     if not cfg:
         return None
@@ -351,13 +352,16 @@ def default_theme() -> dict | None:
         if status == 200:
             theme = next((t for t in res.get("themes", []) if t.get("id") == res.get("default_theme_id")), None)
             if theme is not None:
-                write_json(THEME_CACHE, {"name": theme["name"], "version": theme["version"], "tokens": theme["tokens"]})
-                return theme["tokens"]
+                kept = {"name": theme["name"], "version": theme["version"],
+                        "css": theme.get("css") or "", "tokens": theme.get("tokens") or {}}
+                write_json(THEME_CACHE, kept)
+                return {"css": kept["css"], "tokens": kept["tokens"]}
     except GalleyError:
         pass
     try:
-        return json.loads(THEME_CACHE.read_text(encoding="utf-8")).get("tokens")
-    except (OSError, json.JSONDecodeError):
+        cached = json.loads(THEME_CACHE.read_text(encoding="utf-8"))
+        return {"css": cached.get("css") or "", "tokens": cached.get("tokens") or {}}
+    except (OSError, json.JSONDecodeError, AttributeError):
         return None
 
 

@@ -110,6 +110,8 @@ The skill is complete without it. **When the connector's tools are not available
 
 Keep the render's `Identity:` / `Galley:` / `Galley-URL:` lines intact. To keep a document's identity, edit and re-render its existing doc.json rather than writing a fresh one.
 
+**A new theme.** When the user asks for a PDF theme of their own, described in words or matched to a PDF, brand guide or image they attached, use the connector: `theme_guide` first (the contract in `assets/THEMING.md`, the font library, two worked themes), then write the stylesheet, look at it with `preview_theme` (at least `kind: report` and `lang: bg`), improve it until it is a design of its own rather than the base in new colours, show the user, and `save_theme` only once they are happy (`make_default` if they want their PDFs printed with it). A theme file from `get_theme` (`{"css", "tokens"}`) renders locally with `--theme`.
+
 **Earlier documents.** When the user refers to a document they made before (“update the renderer decision”, “use the figures from last week's report”), find it with `search` or `list_docs` and read its source with `get_doc` instead of asking them to paste it. To update it, edit that source, render it locally if they want the PDF, and save it with `create_version`.
 
 ## Inspector (optional)
