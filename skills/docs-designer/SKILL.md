@@ -93,6 +93,23 @@ Without `--out`, the file goes to `./docs/<title-slug>-<date>.pdf`. Ask before w
 
 Read the PDF back. Check that the front page shows the title, author and date, that no section is empty, and that tables and code aren't cut off. Then give the user the path and a one-line summary. If the render fails, fix the body (usually a forbidden element or invalid JSON), never the stylesheet.
 
+## GalleyDocs (optional)
+
+GalleyDocs is the user's library of these documents: every version kept, a chosen PDF theme, share links. It is reached through the **GalleyDocs connector** (tools `get_theme`, `save_doc`, `create_version`, `search`, `list_docs`, `get_doc`) or, in Claude Code, through `scripts/galley.py` after the user ran `galley.py login` once. Use whichever is available; skip this section when neither is.
+
+**Theme (before step 5).** With the connector, call `get_theme`, write its `{"name", "tokens"}` to `theme.json` next to doc.json and add `--theme theme.json` to the render command. With `galley.py login` the theme is applied automatically.
+
+**Save (after step 6): only when the user says yes.** Ask once: “Save it to GalleyDocs?” Then:
+- **New document, connector:** `save_doc` with the doc.json object as `spec` and body.html as `body` (images, if any, base64 by path). If it returns `similar` documents, nothing was saved: ask the user whether this is a new version of one of them (`create_version` with its id and `latest_version` as `base_version`) or a new document (`save_doc` again with `new_document: true`). Never guess.
+- **Doc.json already has `doc_id`, connector:** `create_version` with that id, `base_version` = its `revision`, the full spec and body, and a one-line note.
+- After either, run `python3 SKILL_DIR/scripts/galley.py remember <doc.json> --pdf <pdf> --doc-id <id> --revision <version>` so the next save of this document becomes its next version. Report the GalleyDocs link.
+- **Without the connector:** run the `push` command the render printed (`galley.py push <doc.json> --pdf <pdf>`). `Identity: ambiguous` with `Candidate:` lines means: ask the user, then push again with `--doc-id <id>` or `--new-doc`.
+- `conflict`: someone saved a newer version (on the web or from another session). Fetch it (`get_doc`, or the printed `galley.py pull` command), re-apply the change, render, then save again. Never overwrite the newer version.
+
+Keep the render's `Identity:` / `Galley:` / `Galley-URL:` lines intact. To keep a document's identity, edit and re-render its existing doc.json rather than writing a fresh one.
+
+**Earlier documents.** When the user refers to a document they made before (“update the renderer decision”, “use the figures from last week's report”), find it with `search` or `list_docs` and read its source with `get_doc` instead of asking them to paste it. To update it, edit that source, render it locally if they want the PDF, and save it with `create_version`.
+
 ## Inspector (optional)
 
 Every render records itself in `~/.docs-designer/last.json`. With the docs-inspector mod installed, a card for the document appears in the chat under your render call; from it the user opens the inspector, clicks any text to edit it or sends you an instruction about it. Keep the render script's output lines (PDF, Title, Spec, Kind) intact: the card is built from them. Those instructions arrive as a prompt that names the element, its section, its current text and its file. Apply them to that element in the source and re-render to the same PDF path. Without the mod, `python3 SKILL_DIR/scripts/inspect_server.py` serves the same inspector at http://127.0.0.1:8765.

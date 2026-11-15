@@ -1,0 +1,14 @@
+/* docs-designer on screen: the document as sheets of A4 paper. Used by the
+   inspector and by GalleyDocs; never part of a printed PDF. */
+@media screen {
+  html { background: #D9DCD7; }
+  body { background: transparent; margin: 0; padding: 10mm 0; }
+  .front, .doc {
+    width: 210mm; margin: 0 auto 10mm; background: var(--paper);
+    box-shadow: 0 1px 2px rgba(18, 20, 23, 0.08), 0 10px 30px rgba(18, 20, 23, 0.12);
+  }
+  .front.cover { height: 297mm; padding: 18mm 20mm 24mm; }
+  .doc { padding: 22mm 25mm 26mm calc(25mm + var(--indent)); }
+  .kind-memo .front { margin-bottom: 0; padding: 18mm 25mm calc(var(--step) * 2.4); box-shadow: none; }
+  .kind-memo .doc { padding-top: 0; }
+}

@@ -19,8 +19,9 @@ type Ask = {
   section: string
 }
 
-/** A document as render.py reports it on stdout (PDF:, Title:, Spec:, Kind: ... | Author: ...). */
-type Rendered = { pdf: string; title: string; spec: string; kind: string; author: string }
+/** A document as render.py reports it on stdout (PDF:, Title:, Spec:, Kind: ... | Author: ...),
+ * plus the GalleyDocs lines when uploads are set up (Galley: status, Galley-URL: link). */
+type Rendered = { pdf: string; title: string; spec: string; kind: string; author: string; galley?: string; galleyURL?: string }
 
 type ElementTable = ReturnType<EngineInterface['ui']['resolve']>
 
@@ -62,7 +63,12 @@ function renderedBy(call: { tool: string; output?: unknown; isRunning: boolean; 
   if (!pdf || !spec || !meta) return null
   const kind = meta.split('|')[0]?.trim() ?? ''
   const author = /Author: ([^|]+)/.exec(meta)?.[1]?.trim() ?? ''
-  return { pdf, spec, kind, author, title: line('Title') ?? pdf.split('/').pop() ?? pdf }
+  const galleyURL = line('Galley-URL')
+  return {
+    pdf, spec, kind, author, title: line('Title') ?? pdf.split('/').pop() ?? pdf,
+    galley: line('Galley'),
+    galleyURL: galleyURL?.startsWith('https://') || galleyURL?.startsWith('http://localhost') ? galleyURL : undefined,
+  }
 }
 
 async function openInspector($: EngineInterface, doc?: Rendered): Promise<string> {
@@ -102,7 +108,13 @@ function docCard($: EngineInterface, { Box, Text, Button }: ElementTable, doc: R
         <Button key={`pdf-${key}`} onPress={() => void $.process.run(['open', doc.pdf])}>
           Open PDF
         </Button>
+        {doc.galleyURL && (
+          <Button key={`galley-${key}`} onPress={() => void $.process.run(['open', doc.galleyURL!])}>
+            Open in GalleyDocs
+          </Button>
+        )}
       </Box>
+      {doc.galley && <Text dimColor>GalleyDocs: {doc.galley}</Text>}
       <Text dimColor>
         In the inspector, click any text to edit it in place, or choose Ask Claude to send an instruction that points at
         that exact element.

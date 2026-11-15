@@ -2,18 +2,8 @@
    Served by scripts/inspect_server.py; never part of a printed PDF. */
 @media screen {
   :root { --dd-ui: #C2255C; --dd-ui-wash: rgba(194, 37, 92, 0.07); --dd-bar: #121417; }
-  html { background: #D9DCD7; }
-  body { background: transparent; margin: 0; padding: 64px 0 64px; }
-
-  /* the document as sheets of A4 paper */
-  .front, .doc {
-    width: 210mm; margin: 0 auto 10mm; background: var(--paper);
-    box-shadow: 0 1px 2px rgba(18, 20, 23, 0.08), 0 10px 30px rgba(18, 20, 23, 0.12);
-  }
-  .front.cover { height: 297mm; padding: 18mm 20mm 24mm; }
-  .doc { padding: 22mm 25mm 26mm calc(25mm + var(--indent)); }
-  .kind-memo .front { margin-bottom: 0; padding: 18mm 25mm calc(var(--step) * 2.4); box-shadow: none; }
-  .kind-memo .doc { padding-top: 0; }
+  /* the A4 sheets come from sheet.css; leave room for the top bar */
+  body { padding: 64px 0 64px; }
 
   /* what can be pointed at */
   [data-dd] { cursor: pointer; border-radius: 2px; transition: background-color 120ms ease-out, outline-color 120ms ease-out; }

@@ -38,7 +38,8 @@ import blocks  # noqa: E402
 
 SKILL = Path(__file__).resolve().parent.parent
 ASSETS = SKILL / "assets"
-STATE_DIR = Path.home() / ".docs-designer"   # last.json: the most recently rendered document
+# last.json (the most recently rendered document), galley.json, identity.log
+STATE_DIR = Path(os.environ.get("DOCS_DESIGNER_STATE") or Path.home() / ".docs-designer")
 CHROME_CANDIDATES = [
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "/Applications/Chromium.app/Contents/MacOS/Chromium",
@@ -189,14 +190,54 @@ def load(spec_path: Path) -> tuple[dict, Path, str]:
     return spec, body_path, body
 
 
-def build_page(spec_path: Path, author: str | None = None, inspect: bool = False) -> tuple[str, dict]:
+INSPECTOR_HEAD = ('<base href="/doc/"><link rel="stylesheet" href="/assets/sheet.css">'
+                  '<link rel="stylesheet" href="/assets/inspector.css">'
+                  '<script src="/assets/inspector.js" defer></script>')
+
+
+# A colour theme recolours these tokens of style.css; fonts and layout never change.
+THEME_TOKENS = ("paper", "ink", "ink-2", "rule", "rule-strong", "tint", "decision", "decision-wash",
+                "warning", "warning-mark", "warning-wash")
+HEX_COLOR = re.compile(r"^#[0-9A-Fa-f]{6}$")
+
+
+def theme_css(tokens: dict | None) -> str:
+    """A :root override for a colour theme. Unknown tokens and non-colour values are ignored."""
+    decl = "".join(f"--{k}:{v};" for k, v in sorted((tokens or {}).items())
+                   if k in THEME_TOKENS and HEX_COLOR.match(str(v)))
+    return f"<style>:root{{{decl}}}</style>" if decl else ""
+
+
+def load_theme(path: Path) -> dict:
+    """Read a theme file: {"name": ..., "tokens": {...}} or a bare token map."""
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        fail(f"cannot read theme {path}: {e}")
+    tokens = data.get("tokens", data) if isinstance(data, dict) else None
+    if not isinstance(tokens, dict):
+        fail(f"theme {path} must hold a tokens object")
+    return tokens
+
+
+def build_page(spec_path: Path, author: str | None = None, inspect: bool = False, *,
+               date: datetime | None = None, stylesheet: str | None = None,
+               head_extra: str | None = None, theme: dict | None = None) -> tuple[str, dict]:
     """Fill the template for a spec. inspect=True tags every editable element with
-    data-dd and points assets at the inspector server instead of the file system."""
+    data-dd and points assets at the inspector server instead of the file system.
+    A server renderer passes the revision's date, its own stylesheet URL and head
+    markup; a local render always uses the moment of rendering. theme recolours
+    the design (see THEME_TOKENS)."""
     spec, body_path, body = load(spec_path)
     kind, lang_code, meta = spec.get("kind", "report"), spec.get("lang", "en"), spec.get("meta") or {}
     L, K = LANG[lang_code], LANG[lang_code]["kinds"][kind]
     author = resolve_author(author or spec.get("author"))
-    now = datetime.now().astimezone()
+    now = (date or datetime.now()).astimezone()
+    if stylesheet is None:
+        stylesheet = "/assets/style.css" if inspect else (ASSETS / "style.css").as_uri()
+    if head_extra is None:
+        head_extra = INSPECTOR_HEAD if inspect else ""
+    head_extra += theme_css(theme)
     date_long = L["date"].format(d=now.day, m=L["months"][now.month - 1], y=now.year)
 
     def dd(ref: str) -> str:
@@ -231,9 +272,8 @@ def build_page(spec_path: Path, author: str | None = None, inspect: bool = False
         "OUTCOME_BLOCK": value_cell(K["outcome"], outcome, "spec:outcome", "full outcome") if outcome else "",
         "CONTENTS_BLOCK": contents(body, L["contents"]),
         "BODY": hang_code_lines(blocks.annotate(body) if inspect else body),
-        "STYLESHEET": "/assets/style.css" if inspect else (ASSETS / "style.css").as_uri(),
-        "HEAD_EXTRA": ('<base href="/doc/"><link rel="stylesheet" href="/assets/inspector.css">'
-                       '<script src="/assets/inspector.js" defer></script>') if inspect else "",
+        "STYLESHEET": html.escape(stylesheet, quote=True),
+        "HEAD_EXTRA": head_extra,
         "CSS_KIND": css_string(K["name"]),
         "CSS_TITLE": css_string(str(spec["title"])),
         "CSS_BYLINE": css_string(f"{author}  ·  {date_long}"),
@@ -254,7 +294,9 @@ def print_pdf(page: str, html_dir: Path, out: Path, keep_html: bool = False) -> 
     html_path.write_text(page, encoding="utf-8")
     chrome = find_chrome()
     with tempfile.TemporaryDirectory() as profile:
-        cmd = [chrome, "--headless", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
+        # CHROME_EXTRA_FLAGS: e.g. "--no-sandbox" inside a container that is itself the sandbox
+        cmd = [chrome, *os.environ.get("CHROME_EXTRA_FLAGS", "").split(), "--headless", "--disable-gpu", "--no-first-run",
+               "--no-default-browser-check",
                f"--user-data-dir={profile}", "--no-pdf-header-footer", "--run-all-compositor-stages-before-draw",
                "--allow-file-access-from-files", f"--print-to-pdf={out}", html_path.as_uri()]
         try:
@@ -268,16 +310,26 @@ def print_pdf(page: str, html_dir: Path, out: Path, keep_html: bool = False) -> 
         fail(f"Chrome did not produce a PDF (exit {proc.returncode}):\n{proc.stderr[-2000:]}")
 
 
-def render(spec_path: Path, out: Path | None = None, author: str | None = None, keep_html: bool = False) -> dict:
-    """Render a spec to PDF and record it as the most recent document."""
-    page, info = build_page(spec_path, author)
+def render(spec_path: Path, out: Path | None = None, author: str | None = None, keep_html: bool = False,
+           *, doc_id: str | None = None, new_doc: bool = False, theme: dict | None = None,
+           save: bool = False) -> dict:
+    """Render a spec to PDF and record it as the most recent document. Without a
+    theme, the user's GalleyDocs theme is used when GalleyDocs is set up. With
+    save (or --doc-id/--new-doc, or auto-save), the render is saved to GalleyDocs."""
+    import galley  # noqa: E402  (local module; imported late so the server renderer never loads it)
+    if theme is None:
+        theme = galley.default_theme()
+    page, info = build_page(spec_path, author, theme=theme)
     out = (out or Path.cwd() / "docs" / f"{slugify(info['title'])}-{datetime.now().date().isoformat()}.pdf").resolve()
     print_pdf(page, spec_path.parent.resolve(), out, keep_html)
-    info = {**info, "pdf": str(out), "author_override": author, "rendered_at": datetime.now().astimezone().isoformat()}
+    info = {**info, "pdf": str(out), "author_override": author, "theme": theme or {},
+            "rendered_at": datetime.now().astimezone().isoformat()}
     try:
         record(info)
     except OSError:
         pass  # the inspector is optional; a render never fails because of it
+    info["galley"] = galley.sync(info, spec_path, out, doc_id=doc_id, new_doc=new_doc,
+                                 save=save or bool(doc_id) or new_doc)
     return info
 
 
@@ -295,9 +347,15 @@ def main():
     ap.add_argument("--out", type=Path, help="output PDF (default: ./docs/<title-slug>-<date>.pdf)")
     ap.add_argument("--author", help="author name (overrides doc.json and git user.name)")
     ap.add_argument("--keep-html", action="store_true", help="keep the intermediate HTML next to the spec")
+    who = ap.add_mutually_exclusive_group()
+    who.add_argument("--doc-id", help="GalleyDocs: this render is a new revision of that document")
+    who.add_argument("--new-doc", action="store_true", help="GalleyDocs: this render starts a new document")
+    ap.add_argument("--theme", type=Path, help="colour theme JSON ({\"tokens\": {...}}, e.g. from the connector's get_theme)")
+    ap.add_argument("--save", action="store_true", help="GalleyDocs: save this render to the library")
     a = ap.parse_args()
     try:
-        info = render(a.spec, a.out, a.author, a.keep_html)
+        theme = load_theme(a.theme) if a.theme else None
+        info = render(a.spec, a.out, a.author, a.keep_html, doc_id=a.doc_id, new_doc=a.new_doc, theme=theme, save=a.save)
     except RenderError as e:
         sys.exit(f"render.py: error: {e}")
     # The docs-designer mod reads these lines to show the document card in the chat.
@@ -305,6 +363,8 @@ def main():
     print(f"Title: {info['title']}")
     print(f"Spec: {info['spec']}")
     print(f"Kind: {info['kind']} | Author: {info['author']} | Date: {info['date']}")
+    for line in info["galley"].get("lines", []):
+        print(line)
 
 
 if __name__ == "__main__":

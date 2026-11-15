@@ -95,7 +95,7 @@ def apply_edit(info: dict, ref: str, new_html: str) -> None:
         body_path = Path(info["body"])
         body = body_path.read_text(encoding="utf-8")
         body_path.write_text(blocks.replace(body, ref, new_html), encoding="utf-8")
-    render.render(spec_path, Path(info["pdf"]), info.get("author_override"))
+    render.render(spec_path, Path(info["pdf"]), info.get("author_override"), theme=info.get("theme") or {})
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -147,7 +147,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._file(root / unquote(url.path[len("/doc/"):]), root)
         if url.path in ("/", "/index.html"):
             try:
-                page, _ = render.build_page(Path(info["spec"]), info.get("author_override"), inspect=True)
+                page, _ = render.build_page(Path(info["spec"]), info.get("author_override"), inspect=True,
+                                            theme=info.get("theme"))
             except render.RenderError as e:
                 return self._send(500, f"<p>Cannot build the page: {e}</p>".encode(), "text/html; charset=utf-8")
             page = page.replace("<head>", f'<head><meta name="dd-version" content="{version(info)}">', 1)
